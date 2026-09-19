@@ -8,7 +8,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <title>SIPKAR - Scan QR</title>
+  <title>SIPKAR V5.5.6 - Scan QR</title>
 
   <script
     src="https://unpkg.com/html5-qrcode"
@@ -896,6 +896,75 @@ textarea {
 }
 
 /* =====================================================
+   REKAP PER KELAS V5.4.1
+   ===================================================== */
+.rekap-kelas-selector{
+  padding:14px; margin-bottom:14px; border:1px solid var(--border);
+  border-radius:14px; background:#f7f9fb;
+}
+.rekap-kelas-selector label{display:block; margin-bottom:7px; font-size:12px; font-weight:800; color:#586372}
+.rekap-kelas-selector select{
+  flex:1; min-width:0; border:1px solid var(--border); background:#fff;
+  border-radius:11px; padding:10px 12px; font-weight:700; color:#253142;
+}
+.rekap-kelas-selector button{
+  border:0; border-radius:11px; padding:10px 13px; background:var(--primary);
+  color:#fff; font-weight:800; cursor:pointer; white-space:nowrap;
+}
+.rekap-kelas-selector button:disabled{opacity:.6; cursor:wait}
+.rekap-kelas-identitas{
+  display:flex; align-items:center; gap:12px; padding:15px; margin-bottom:14px;
+  border-radius:15px; border:1px solid var(--border);
+  background:linear-gradient(135deg,#f7f9fb,#fff);
+}
+.rekap-kelas-identitas .rekap-avatar{margin:0}
+.rekap-kelas-ringkasan{margin-top:4px}
+.rekap-kelas-total{
+  margin-top:12px; padding:12px 14px; border-radius:12px;
+  background:#fffaf0; border:1px solid #eadfca; font-size:12px;
+}
+@media(max-width:600px){
+  .rekap-kelas-selector .rekap-search-row{flex-direction:column}
+  .rekap-kelas-selector select,.rekap-kelas-selector button{width:100%}
+}
+
+ .btn-rekap-kelas{border:1px solid var(--primary);background:#fff;color:var(--primary);border-radius:9px;padding:7px 9px;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap}
+.btn-rekap-kelas:hover{background:var(--primary);color:#fff}
+
+/* =====================================================
+   REKAP PER KELAS V5.4.1
+   ===================================================== */
+.rekap-kelas-selector{
+  padding:14px; margin-bottom:14px; border:1px solid var(--border);
+  border-radius:14px; background:#f7f9fb;
+}
+.rekap-kelas-selector label{display:block; margin-bottom:7px; font-size:12px; font-weight:800; color:#586372}
+.rekap-kelas-selector select{
+  flex:1; min-width:0; border:1px solid var(--border); background:#fff;
+  border-radius:11px; padding:10px 12px; font-weight:700; color:#253142;
+}
+.rekap-kelas-selector button{
+  border:0; border-radius:11px; padding:10px 13px; background:var(--primary);
+  color:#fff; font-weight:800; cursor:pointer; white-space:nowrap;
+}
+.rekap-kelas-selector button:disabled{opacity:.6; cursor:wait}
+.rekap-kelas-identitas{
+  display:flex; align-items:center; gap:12px; padding:15px; margin-bottom:14px;
+  border-radius:15px; border:1px solid var(--border);
+  background:linear-gradient(135deg,#f7f9fb,#fff);
+}
+.rekap-kelas-identitas .rekap-avatar{margin:0}
+.rekap-kelas-ringkasan{margin-top:4px}
+.rekap-kelas-total{
+  margin-top:12px; padding:12px 14px; border-radius:12px;
+  background:#fffaf0; border:1px solid #eadfca; font-size:12px;
+}
+@media(max-width:600px){
+  .rekap-kelas-selector .rekap-search-row{flex-direction:column}
+  .rekap-kelas-selector select,.rekap-kelas-selector button{width:100%}
+}
+
+/* =====================================================
    MOBILE
    ===================================================== */
 
@@ -1432,8 +1501,66 @@ textarea {
   font-size: 12px;
   color: #7b6b57;
 }
+
+.surat-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.surat-form-grid .full{grid-column:1/-1}.surat-pemanggilan-card{overflow:hidden}.surat-generate-box{margin-top:18px;padding:16px;border-radius:14px;border:1px solid #ead7b0;background:#fffaf0}.surat-generate-box .btn-laporan-siswa{width:100%;max-width:420px}@media(max-width:700px){.surat-form-grid{grid-template-columns:1fr}.surat-form-grid .full{grid-column:auto}}
+
+/* V5.5.2.4 - HASIL DOWNLOAD SURAT */
+.surat-download-result{
+  margin-top:12px;
+  padding:14px;
+  border:1px solid #d8b15a;
+  border-radius:12px;
+  background:#fffaf0;
+  text-align:center;
+}
+.surat-download-success{
+  font-weight:800;
+  color:#167a45;
+  margin-bottom:7px;
+}
+.surat-download-filename{
+  font-size:13px;
+  color:#333;
+  margin-bottom:12px;
+  word-break:break-word;
+}
+.btn-download-word{
+  display:block;
+  width:100%;
+  box-sizing:border-box;
+  padding:12px 14px;
+  border-radius:10px;
+  background:#8B0000;
+  color:#fff !important;
+  text-decoration:none !important;
+  font-weight:800;
+  margin-bottom:8px;
+}
+.btn-download-word:hover{
+  opacity:.92;
+}
+.btn-buka-drive{
+  display:block;
+  width:100%;
+  box-sizing:border-box;
+  padding:10px 14px;
+  border-radius:10px;
+  background:#f2f4f7;
+  color:#173f63 !important;
+  text-decoration:none !important;
+  font-weight:700;
+}
+
 </style>
 
+
+<style>
+.surat-peringatan-preview{margin-top:16px;padding:16px;border:1px solid #e5e7eb;border-radius:14px;background:#fafafa}
+.surat-peringatan-preview h4{margin:0 0 10px;color:#111827}
+.surat-peringatan-list{margin:0;padding-left:24px;color:#111827}
+.surat-peringatan-list li{margin:5px 0;line-height:1.5}
+.surat-peringatan-sign{margin-top:14px;padding:12px 14px;border-radius:10px;background:#f8fafc;color:#111827}
+</style>
 </head>
 
 
@@ -1518,6 +1645,9 @@ textarea {
       <div class="admin-nav" aria-label="Navigasi Admin">
         <button id="navDashboard" class="active" onclick="bukaHalamanAdmin('dashboard')">📊 Dashboard</button>
         <button id="navRekapSiswa" onclick="bukaHalamanAdmin('rekapSiswa')">👤 Rekap Siswa</button>
+        <button id="navRekapKelas" onclick="bukaHalamanAdmin('rekapKelas')">🏫 Rekap Per Kelas</button>
+        <button id="navSuratPemanggilan" onclick="bukaHalamanAdmin('suratPemanggilan')">📄 Surat Pemanggilan</button>
+        <button id="navSuratPeringatan" onclick="bukaHalamanAdmin('suratPeringatan')">⚠️ Surat Peringatan</button>
         <button id="navTindakLanjut" onclick="bukaHalamanAdmin('tindakLanjut')">🛡️ Tindak Lanjut</button>
       </div>
 
@@ -1712,6 +1842,227 @@ textarea {
     </div>
 
 
+      <!-- HALAMAN REKAP PER KELAS ADMIN -->
+      <div id="adminRekapKelasPage" class="admin-page">
+        <div class="rekap-back">
+          <button onclick="bukaHalamanAdmin('dashboard')">← Kembali ke Dashboard</button>
+        </div>
+
+        <div class="card rekap-kelas-admin">
+          <div class="dashboard-section-title">
+            <div>
+              <h3>🏫 Rekap Poin Per Kelas</h3>
+              <span>Ringkasan data kelas dari Google Sheets</span>
+            </div>
+            <span>Read Only</span>
+          </div>
+
+          <div class="rekap-kelas-selector">
+            <label for="selectRekapKelas">Pilih Kelas</label>
+            <div class="rekap-search-row">
+              <select id="selectRekapKelas">
+                <option value="">-- Pilih Kelas --</option>
+              </select>
+              <button id="btnMuatRekapKelas" type="button" onclick="muatRekapKelasDetail()">🔍 Tampilkan</button>
+            </div>
+            <div class="rekap-search-hint">
+              Daftar kelas diambil dari data Rekap Per Kelas pada Dashboard.
+            </div>
+          </div>
+
+          <div id="rekapKelasStatus" class="dashboard-loading">
+            Pilih kelas untuk melihat ringkasan poin.
+          </div>
+
+          <div id="rekapKelasHasil" style="display:none;">
+            <div class="rekap-report-action rekap-kelas-report-action">
+              <button type="button" class="btn-laporan-siswa btn-laporan-kelas" onclick="buatLaporanKelasPDF()">
+                📄 Cetak / Simpan PDF
+              </button>
+              <div class="rekap-report-hint">
+                Laporan kelas mencakup ringkasan, ranking seluruh siswa, status, dan tanda tangan.
+              </div>
+            </div>
+
+
+            <div class="rekap-kelas-identitas">
+              <div class="rekap-avatar">🏫</div>
+              <div>
+                <div id="rekapKelasNama" class="rekap-nama">-</div>
+                <div id="rekapKelasId" class="rekap-meta">-</div>
+                <div id="rekapKelasWali" class="rekap-meta">Wali Kelas: -</div>
+              </div>
+            </div>
+
+            <div class="rekap-ringkasan-grid rekap-kelas-ringkasan">
+              <div class="rekap-mini-card">
+                <span>Jumlah Siswa</span>
+                <b id="rekapKelasJumlahSiswa">0</b>
+              </div>
+              <div class="rekap-mini-card positive">
+                <span>Total Positif</span>
+                <b id="rekapKelasPositif">0</b>
+              </div>
+              <div class="rekap-mini-card negative">
+                <span>Total Negatif</span>
+                <b id="rekapKelasNegatif">0</b>
+              </div>
+              <div class="rekap-mini-card current">
+                <span>Total Poin Saat Ini</span>
+                <b id="rekapKelasSaatIni">0</b>
+              </div>
+            </div>
+
+            <div class="rekap-kelas-total">
+              📋 Total transaksi poin: <b id="rekapKelasTransaksi">0</b>
+            </div>
+
+            <!-- V5.4.2: RANKING POIN -->
+            <div class="card ranking-kelas-card">
+              <div class="dashboard-section-title">
+                <div>
+                  <h3>🏆 Ranking Poin Peserta Didik</h3>
+                  <span>Urutan berdasarkan Poin Saat Ini</span>
+                </div>
+                <span id="rankingKelasJumlah">0 siswa</span>
+              </div>
+
+              <div id="rankingKelasTabel" class="rekap-table-wrap">
+                <div class="dashboard-loading">Menunggu data kelas...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HALAMAN SURAT PEMANGGILAN ORANG TUA -->
+      <div id="adminSuratPemanggilanPage" class="admin-page">
+        <div class="rekap-back">
+          <button onclick="bukaHalamanAdmin('dashboard')">← Kembali ke Dashboard</button>
+        </div>
+        <div class="card surat-pemanggilan-card">
+          <div class="dashboard-section-title"><div><h3>📄 Surat Pemanggilan Orang Tua</h3><span>Membuat surat resmi dalam format PDF A4</span></div></div>
+          <div class="surat-form-grid">
+            <div class="tindak-form-field full">
+              <label for="suratIdSiswa">ID Siswa</label>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;"><input id="suratIdSiswa" type="text" placeholder="Contoh: S001" autocomplete="off" style="flex:1;min-width:220px;"><button type="button" class="btn-login" onclick="muatDataSuratPemanggilan()">🔍 Ambil Data Siswa</button></div>
+              <div class="tindak-form-help">Data nama, NIS/NISN, kelas, dan wali kelas akan diambil otomatis.</div>
+            </div>
+          </div>
+          <div id="suratSiswaStatus" class="dashboard-loading" style="margin-top:12px;">Belum ada siswa yang dipilih.</div>
+          <div id="suratIdentitas" class="rekap-identitas" style="display:none;margin-top:14px;"><div class="rekap-avatar">👨‍🎓</div><div><div id="suratNamaSiswa" class="rekap-nama">-</div><div id="suratNisNisn" class="rekap-meta">-</div><div id="suratKelas" class="rekap-meta">-</div><div id="suratWaliKelas" class="rekap-meta">-</div></div></div>
+          <div id="suratForm" style="display:none;margin-top:18px;">
+            <div class="surat-form-grid">
+              <div class="tindak-form-field"><label for="suratNomor">Nomor Surat</label><input id="suratNomor" type="text" placeholder="Contoh: 001/SIPKAR/IX/2026"></div>
+              <div class="tindak-form-field"><label for="suratTanggalSurat">Tanggal Surat</label><input id="suratTanggalSurat" type="date"></div>
+              <div class="tindak-form-field"><label for="suratHariTanggal">Hari/Tanggal Pemanggilan</label><input id="suratHariTanggal" type="text" placeholder="Contoh: Senin, 21 September 2026"></div>
+              <div class="tindak-form-field"><label for="suratWaktu">Waktu</label><input id="suratWaktu" type="text" placeholder="Contoh: 09.00 WITA – selesai"></div>
+              <div class="tindak-form-field full"><label for="suratTempat">Tempat</label><input id="suratTempat" type="text" placeholder="Contoh: Ruang Kepala Sekolah SDIT Azzahrah"></div>
+              <div class="tindak-form-field full"><label for="suratKeperluan">Keperluan</label><textarea id="suratKeperluan" rows="4" placeholder="Tuliskan keperluan pemanggilan orang tua..."></textarea></div>
+            </div>
+            <div class="surat-generate-box"><button type="button" id="btnBuatSuratPemanggilan" class="btn-laporan-siswa" onclick="buatSuratPemanggilanPDF()">📄 Buat Surat Pemanggilan (PDF)</button>
+<div id="hasilDownloadSurat" class="surat-download-result" style="display:none;">
+  <div class="surat-download-success">✅ Surat Pemanggilan berhasil dibuat.</div>
+  <div id="namaFileSuratDownload" class="surat-download-filename"></div>
+  <a id="btnDownloadSuratWord"
+     class="btn-download-word"
+     href="#"
+     target="_blank"
+     rel="noopener"
+     download>
+    ⬇️ DOWNLOAD PDF
+  </a>
+  <a id="btnBukaSuratDrive"
+     class="btn-buka-drive"
+     href="#"
+     target="_blank"
+     rel="noopener">
+    📄 Buka Dokumen di Google Drive
+  </a>
+</div><div id="suratGenerateStatus" class="dashboard-loading" style="margin-top:10px;">File PDF belum dibuat.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HALAMAN SURAT PERINGATAN -->
+      <div id="adminSuratPeringatanPage" class="admin-page">
+        <div class="rekap-back">
+          <button onclick="bukaHalamanAdmin('dashboard')">← Kembali ke Dashboard</button>
+        </div>
+
+        <div class="card surat-pemanggilan-card">
+          <div class="dashboard-section-title">
+            <div>
+              <h3>⚠️ Surat Peringatan</h3>
+              <span>Membuat Surat Peringatan resmi dalam format PDF A4</span>
+            </div>
+          </div>
+
+          <div class="surat-form-grid">
+            <div class="tindak-form-field full">
+              <label for="peringatanIdSiswa">ID Siswa</label>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <input id="peringatanIdSiswa" type="text" placeholder="Contoh: S001" autocomplete="off" style="flex:1;min-width:220px;">
+                <button type="button" class="btn-login" onclick="muatDataSuratPeringatan()">🔍 Ambil Data Siswa</button>
+              </div>
+              <div class="tindak-form-help">Data siswa, wali kelas, dan riwayat pelanggaran akan diambil otomatis dari SIPKAR.</div>
+            </div>
+          </div>
+
+          <div id="peringatanSiswaStatus" class="dashboard-loading" style="margin-top:12px;">Belum ada siswa yang dipilih.</div>
+
+          <div id="peringatanIdentitas" class="rekap-identitas" style="display:none;margin-top:14px;">
+            <div class="rekap-avatar">👨‍🎓</div>
+            <div>
+              <div id="peringatanNamaSiswa" class="rekap-nama">-</div>
+              <div id="peringatanNisNisn" class="rekap-meta">-</div>
+              <div id="peringatanKelas" class="rekap-meta">-</div>
+              <div id="peringatanWaliKelas" class="rekap-meta">-</div>
+            </div>
+          </div>
+
+          <div id="peringatanForm" style="display:none;margin-top:18px;">
+            <div class="surat-form-grid">
+              <div class="tindak-form-field">
+                <label for="peringatanNomor">Nomor Surat</label>
+                <input id="peringatanNomor" type="text" placeholder="Contoh: 001/SP/SIPKAR/IX/2026">
+              </div>
+              <div class="tindak-form-field">
+                <label for="peringatanTanggalSurat">Tanggal Surat</label>
+                <input id="peringatanTanggalSurat" type="date">
+              </div>
+              <div class="tindak-form-field full">
+                <label>Wakil Kepala Sekolah Bidang Kesiswaan</label>
+                <input id="peringatanWaka" class="tindak-form-readonly" type="text" readonly>
+              </div>
+            </div>
+
+            <div class="surat-peringatan-preview">
+              <h4>📋 Pelanggaran yang dilakukan</h4>
+              <div id="peringatanRiwayatStatus" class="dashboard-loading">Memuat riwayat pelanggaran...</div>
+              <ol id="peringatanRiwayat" class="surat-peringatan-list"></ol>
+            </div>
+
+            <div class="surat-peringatan-sign">
+              <strong>Penandatangan:</strong><br>
+              Wakil Kepala Sekolah Bidang Kesiswaan<br>
+              <span id="peringatanNamaWaka">-</span>
+            </div>
+
+            <div class="surat-generate-box" style="margin-top:16px;">
+              <button type="button" id="btnBuatSuratPeringatan" class="btn-laporan-siswa" onclick="buatSuratPeringatanPDF()">📄 Buat Surat Peringatan (PDF)</button>
+              <div id="hasilDownloadPeringatan" class="surat-download-result" style="display:none;">
+                <div class="surat-download-success">✅ Surat Peringatan berhasil dibuat.</div>
+                <div id="namaFilePeringatanDownload" class="surat-download-filename"></div>
+                <a id="btnDownloadPeringatan" class="btn-download-word" href="#" target="_blank" rel="noopener" download>⬇️ DOWNLOAD PDF</a>
+                <a id="btnBukaPeringatanDrive" class="btn-buka-drive" href="#" target="_blank" rel="noopener">📄 Buka Dokumen di Google Drive</a>
+              </div>
+              <div id="peringatanGenerateStatus" class="dashboard-loading" style="margin-top:10px;">File PDF belum dibuat.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- HALAMAN TINDAK LANJUT ADMIN -->
       <div id="adminTindakLanjutPage" class="admin-page">
         <div class="tindak-page-wrap">
@@ -1869,8 +2220,15 @@ textarea {
                     <label>Dokumen Surat</label>
                     <div class="tindak-surat-box">
                       <strong id="formSuratJudul">📄 Dokumen Surat</strong>
-                      <span class="tindak-form-help">Integrasi file surat akan kita aktifkan pada tahap berikutnya. Untuk saat ini tombol masih nonaktif.</span>
-                      <button type="button" class="btn-surat-placeholder" disabled>📥 Download Surat — tahap berikutnya</button>
+                      <span id="formSuratHelp" class="tindak-form-help">
+                        Data siswa yang sedang diproses dapat langsung dibawa ke formulir pembuatan surat.
+                      </span>
+                      <button
+                        type="button"
+                        id="btnBukaSuratDariTindak"
+                        class="btn-login"
+                        onclick="bukaSuratDariTindakLanjut()"
+                      >📄 Buat Surat Pemanggilan Orang Tua</button>
                     </div>
                   </div>
 
@@ -2439,12 +2797,15 @@ function tampilkanRekapKelas(data) {
             <th>+</th>
             <th>-</th>
             <th>Saat Ini</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
   `;
 
-  data.forEach(function(item) {
+  window.sipkarRekapKelasDashboard = data || [];
+
+  data.forEach(function(item, index) {
 
     const namaKelas =
       item.namaKelas ||
@@ -2487,6 +2848,7 @@ function tampilkanRekapKelas(data) {
         <td>${formatAngka(positif)}</td>
         <td>${formatAngka(negatif)}</td>
         <td><b>${formatAngka(saatIni)}</b></td>
+        <td><button type="button" class="btn-rekap-kelas" onclick="bukaRekapKelasDariDashboard(${index})">👥 Rekap</button></td>
       </tr>
     `;
   });
@@ -2570,9 +2932,634 @@ function escapeHtml(value) {
 
 
 // =====================================================
+// REKAP PER KELAS V5.4.1
+// READ ONLY — TIDAK MENULIS KE GOOGLE SHEETS
+// =====================================================
+
+function siapkanPilihanRekapKelas() {
+  const select = document.getElementById("selectRekapKelas");
+  if (!select) return;
+
+  const data = Array.isArray(window.sipkarRekapKelasDashboard)
+    ? window.sipkarRekapKelasDashboard
+    : [];
+
+  const nilaiLama = select.value;
+  select.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+
+  data.forEach(function(item, index) {
+    const nama = item.namaKelas || item.kelas || item.Nama_Kelas || "Kelas " + (index + 1);
+    const id = item.idKelas || item.ID_Kelas || nama;
+    const option = document.createElement("option");
+    option.value = String(id);
+    option.textContent = nama;
+    option.dataset.namaKelas = nama;
+    option.dataset.index = index;
+    select.appendChild(option);
+  });
+
+  if (nilaiLama) select.value = nilaiLama;
+}
+
+function bukaRekapKelasDariDashboard(index) {
+  bukaHalamanAdmin("rekapKelas");
+  const select = document.getElementById("selectRekapKelas");
+  if (!select) return;
+
+  const data = Array.isArray(window.sipkarRekapKelasDashboard)
+    ? window.sipkarRekapKelasDashboard
+    : [];
+  const item = data[index];
+  if (!item) return;
+
+  const id = item.idKelas || item.ID_Kelas || item.namaKelas || item.kelas || item.Nama_Kelas || "";
+  select.value = String(id);
+  muatRekapKelasDetail();
+}
+
+function muatRekapKelasDetail() {
+  if (!penggunaAktif || String(penggunaAktif.role || "").trim().toLowerCase() !== "admin") return;
+
+  const select = document.getElementById("selectRekapKelas");
+  const status = document.getElementById("rekapKelasStatus");
+  const hasil = document.getElementById("rekapKelasHasil");
+  const tombol = document.getElementById("btnMuatRekapKelas");
+  const option = select ? select.options[select.selectedIndex] : null;
+
+  if (!select || !select.value) {
+    status.className = "dashboard-error";
+    status.innerText = "❌ Silakan pilih kelas terlebih dahulu.";
+    hasil.style.display = "none";
+    return;
+  }
+
+  const nilaiKelas = String(select.value).trim();
+  const namaKelas = option && option.dataset.namaKelas
+    ? option.dataset.namaKelas
+    : (option ? option.textContent : nilaiKelas);
+
+  status.className = "dashboard-loading";
+  status.innerText = "Mengambil data kelas dari Google Sheets...";
+  hasil.style.display = "none";
+  tombol.disabled = true;
+  tombol.innerText = "Memuat...";
+
+  const callback = "callbackRekapKelasV541_" + Date.now();
+  window[callback] = function(data) {
+    delete window[callback];
+    tombol.disabled = false;
+    tombol.innerText = "🔍 Tampilkan";
+
+    if (!data || data.berhasil === false) {
+      status.className = "dashboard-error";
+      status.innerText = "❌ " + ((data && data.pesan) || "Data rekap kelas tidak dapat diambil.");
+      hasil.style.display = "none";
+      return;
+    }
+
+    tampilkanRingkasanRekapKelas(data, nilaiKelas, namaKelas);
+  };
+
+  const script = document.createElement("script");
+  script.src = APPS_SCRIPT_URL +
+    "?action=rekapPerKelas" +
+    "&idKelas=" + encodeURIComponent(nilaiKelas) +
+    "&kelas=" + encodeURIComponent(nilaiKelas) +
+    "&namaKelas=" + encodeURIComponent(namaKelas) +
+    "&callback=" + callback;
+
+  script.onerror = function() {
+    delete window[callback];
+    tombol.disabled = false;
+    tombol.innerText = "🔍 Tampilkan";
+    status.className = "dashboard-error";
+    status.innerText = "❌ Tidak dapat menghubungi server SIPKAR.";
+    hasil.style.display = "none";
+  };
+
+  document.body.appendChild(script);
+}
+
+function tampilkanRingkasanRekapKelas(data, idKelas, namaKelasFallback) {
+  const kelas = data.kelas || data.infoKelas || {};
+  const namaKelas = data.namaKelas || kelas.namaKelas || kelas.Nama_Kelas || namaKelasFallback || "-";
+  const id = data.idKelas || kelas.idKelas || kelas.ID_Kelas || idKelas || "-";
+
+  const daftar = Array.isArray(data.siswa) ? data.siswa
+    : (Array.isArray(data.rekapSiswa) ? data.rekapSiswa
+    : (Array.isArray(data.data) ? data.data : (Array.isArray(data.rekap) ? data.rekap : [])));
+
+  const ringkasan = data.ringkasan || data.summary || {};
+
+  const jumlahSiswa = ambilAngka(data,["totalSiswa","jumlahSiswa"]) || ambilAngka(ringkasan,["totalSiswa","jumlahSiswa"]) || daftar.length;
+  const positif = ambilAngka(data,["totalPoinPositif","poinPositif","positif"]) || ambilAngka(ringkasan,["totalPoinPositif","poinPositif","positif"]) || daftar.reduce((t,x)=>t+ambilAngka(x,["poinPositif","totalPoinPositif","positif"]),0);
+  const negatif = ambilAngka(data,["totalPoinNegatif","poinNegatif","negatif"]) || ambilAngka(ringkasan,["totalPoinNegatif","poinNegatif","negatif"]) || daftar.reduce((t,x)=>t+ambilAngka(x,["poinNegatif","totalPoinNegatif","negatif"]),0);
+  const saatIni = ambilAngka(data,["totalPoinSaatIni","poinSaatIni","saatIni"]) || ambilAngka(ringkasan,["totalPoinSaatIni","poinSaatIni","saatIni"]) || daftar.reduce((t,x)=>t+ambilAngka(x,["poinSaatIni","totalPoinSaatIni","saatIni","poin"]),0);
+  const transaksi = ambilAngka(data,["totalTransaksi","transaksi"]) || ambilAngka(ringkasan,["totalTransaksi","transaksi"]) || daftar.reduce((t,x)=>t+ambilAngka(x,["totalTransaksi","transaksi"]),0);
+
+  document.getElementById("rekapKelasNama").innerText = namaKelas;
+  document.getElementById("rekapKelasId").innerText = "ID Kelas: " + id;
+  document.getElementById("rekapKelasJumlahSiswa").innerText = formatAngka(jumlahSiswa);
+  document.getElementById("rekapKelasPositif").innerText = formatAngka(positif);
+  document.getElementById("rekapKelasNegatif").innerText = formatAngka(negatif);
+  document.getElementById("rekapKelasSaatIni").innerText = formatAngka(saatIni);
+  document.getElementById("rekapKelasTransaksi").innerText = formatAngka(transaksi);
+
+  // V5.4.2 — ranking dihitung dari seluruh siswa yang dikirim backend.
+  tampilkanRankingRekapKelas(daftar);
+
+  // V5.4.4 — ambil nama wali kelas dari sheet KELAS.
+  ambilWaliKelasKelas(id, namaKelas);
+
+  const status = document.getElementById("rekapKelasStatus");
+  status.className = "dashboard-success";
+  status.innerText = "✓ Rekap kelas berhasil diambil dari Google Sheets (Read Only).";
+  document.getElementById("rekapKelasHasil").style.display = "block";
+}
+
+// =====================================================
 // REKAP SISWA ADMIN
 // HANYA MEMBACA DATA DARI APPS SCRIPT
 // =====================================================
+
+
+
+// =====================================================
+// V5.4.4 — WALI KELAS DARI SHEET KELAS
+// READ ONLY
+// =====================================================
+
+function ambilWaliKelasKelas(idKelas, namaKelas) {
+  waliKelasAktif = "";
+
+  const el = document.getElementById("rekapKelasWali");
+  if (el) el.innerText = "Wali Kelas: memuat...";
+
+  const callback = "callbackWaliKelas_" + Date.now();
+
+  window[callback] = function(data) {
+    delete window[callback];
+
+    if (!data || data.berhasil === false) {
+      waliKelasAktif = "";
+      if (el) el.innerText = "Wali Kelas: -";
+      return;
+    }
+
+    const kelas = data.kelas || data.data || {};
+    waliKelasAktif =
+      data.waliKelas ||
+      kelas.waliKelas ||
+      kelas.Wali_Kelas ||
+      "";
+
+    const nama =
+      data.namaKelas ||
+      kelas.namaKelas ||
+      kelas.Nama_Kelas ||
+      namaKelas ||
+      "-";
+
+    const tingkat =
+      data.tingkat ||
+      kelas.tingkat ||
+      kelas.Tingkat ||
+      "";
+
+    if (el) {
+      el.innerText =
+        "Wali Kelas: " +
+        (waliKelasAktif || "-") +
+        (tingkat ? " • Tingkat: " + tingkat : "");
+    }
+  };
+
+  const script = document.createElement("script");
+  script.src =
+    APPS_SCRIPT_URL +
+    "?action=waliKelas" +
+    "&idKelas=" + encodeURIComponent(idKelas || "") +
+    "&namaKelas=" + encodeURIComponent(namaKelas || "") +
+    "&callback=" + callback;
+
+  script.onerror = function() {
+    delete window[callback];
+    waliKelasAktif = "";
+    if (el) el.innerText = "Wali Kelas: -";
+  };
+
+  document.body.appendChild(script);
+}
+
+// =====================================================
+// V5.4.2 — RANKING POIN PER KELAS
+// READ ONLY — TIDAK MENULIS KE GOOGLE SHEETS
+// =====================================================
+
+function tampilkanRankingRekapKelas(daftar) {
+  const container = document.getElementById("rankingKelasTabel");
+  const jumlahEl = document.getElementById("rankingKelasJumlah");
+
+  if (!container) return;
+
+  const siswa = (Array.isArray(daftar) ? daftar : []).map(function(item) {
+    return {
+      idSiswa: item.idSiswa || item.ID_Siswa || item.id || "-",
+      nama: item.nama || item.Nama || item.namaSiswa || item.Nama_Siswa || "-",
+      jk: item.jk || item.JK || item.jenisKelamin || "-",
+      poinAwal: ambilAngka(item, ["poinAwal", "Poin_Awal"]),
+      positif: ambilAngka(item, ["poinPositif", "totalPoinPositif", "positif"]),
+      negatif: ambilAngka(item, ["poinNegatif", "totalPoinNegatif", "negatif"]),
+      poinSaatIni: ambilAngka(item, ["poinSaatIni", "totalPoinSaatIni", "saatIni", "poin"]),
+      status: item.status || item.statusSiswa || item.Status || "-"
+    };
+  });
+
+  // Ranking utama: Poin Saat Ini tertinggi.
+  // Jika nilainya sama, nama digunakan sebagai urutan kedua agar stabil.
+  siswa.sort(function(a, b) {
+    if (b.poinSaatIni !== a.poinSaatIni) {
+      return b.poinSaatIni - a.poinSaatIni;
+    }
+    return String(a.nama).localeCompare(String(b.nama), "id", {
+      sensitivity: "base"
+    });
+  });
+
+  jumlahEl.innerText = siswa.length + " siswa";
+
+  if (!siswa.length) {
+    container.innerHTML =
+      '<div class="dashboard-empty">Belum ada data siswa pada kelas ini.</div>';
+    return;
+  }
+
+  let html = `
+    <table class="rekap-table ranking-table">
+      <thead>
+        <tr>
+          <th style="width:7%;">Rank</th>
+          <th>Nama Siswa</th>
+          <th style="width:7%;">JK</th>
+          <th style="width:11%;">Poin Awal</th>
+          <th style="width:10%;">+</th>
+          <th style="width:10%;">−</th>
+          <th style="width:14%;">Poin Saat Ini</th>
+          <th style="width:17%;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  siswa.forEach(function(item, index) {
+    const rank = index + 1;
+    const medal =
+      rank === 1 ? "🥇" :
+      rank === 2 ? "🥈" :
+      rank === 3 ? "🥉" : "";
+
+    const rowClass =
+      rank === 1 ? "ranking-row-first" :
+      rank === 2 ? "ranking-row-second" :
+      rank === 3 ? "ranking-row-third" : "";
+
+    const status = normalisasiStatusRanking(item.status);
+
+    html += `
+      <tr class="${rowClass}">
+        <td style="text-align:center;">
+          <span class="ranking-medal">${medal}</span>
+          <span class="ranking-number">${rank}</span>
+        </td>
+        <td>
+          <div class="ranking-name">${escapeHtml(item.nama)}</div>
+          <div class="ranking-id">${escapeHtml(item.idSiswa)}</div>
+        </td>
+        <td style="text-align:center;">${escapeHtml(item.jk)}</td>
+        <td>${formatAngka(item.poinAwal)}</td>
+        <td>${formatAngka(item.positif)}</td>
+        <td>${formatAngka(item.negatif)}</td>
+        <td class="ranking-poin">${formatAngka(item.poinSaatIni)}</td>
+        <td>
+          <span class="ranking-status ${status.className}">
+            ${escapeHtml(status.label)}
+          </span>
+        </td>
+      </tr>
+    `;
+  });
+
+  html += `
+      </tbody>
+    </table>
+    <div class="ranking-summary-note">
+      ℹ️ Ranking diurutkan berdasarkan <b>Poin Saat Ini</b> dari tertinggi ke terendah.
+      Data bersifat <b>Read Only</b>.
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+function normalisasiStatusRanking(status) {
+  const nilai = String(status || "").trim().toLowerCase();
+
+  if (nilai.includes("tindak") || nilai.includes("lanjut")) {
+    return {
+      label: "Perlu Tindak Lanjut",
+      className: "ranking-status-tindak"
+    };
+  }
+
+  if (nilai.includes("bina") || nilai.includes("pembinaan")) {
+    return {
+      label: "Perlu Pembinaan",
+      className: "ranking-status-pembinaan"
+    };
+  }
+
+  if (!nilai || nilai === "-" || nilai === "baik") {
+    return {
+      label: "Baik",
+      className: "ranking-status-baik"
+    };
+  }
+
+  return {
+    label: status,
+    className: "ranking-status-baik"
+  };
+}
+
+
+// V5.4.4 — Wali Kelas aktif dari sheet KELAS
+let waliKelasAktif = "";
+
+// =====================================================
+// V5.4.3 — PDF REKAP PER KELAS
+// READ ONLY
+// =====================================================
+function buatLaporanKelasPDF() {
+  const hasil = document.getElementById("rekapKelasHasil");
+  const tabel = document.getElementById("rankingKelasTabel");
+
+  if (!hasil || hasil.style.display === "none" || !tabel) {
+    alert("Silakan tampilkan rekap kelas terlebih dahulu.");
+    return;
+  }
+
+  // Ambil data pengaturan dari Web App pada halaman utama.
+  // Setelah berhasil, baru membuka jendela PDF sehingga
+  // Kepala Sekolah dan Wali Kelas sudah tersedia sebelum print.
+  const callback = "callbackPDFKelas_" + Date.now();
+  let selesai = false;
+  let timer = null;
+
+  function bersihkan() {
+    if (timer) clearTimeout(timer);
+    delete window[callback];
+  }
+
+  window[callback] = function(data) {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+
+    if (!data || data.berhasil === false) {
+      alert(
+        "Data Kepala Sekolah belum dapat diambil dari PENGATURAN. " +
+        "Pastikan deployment Apps Script sudah menggunakan versi terbaru."
+      );
+      return;
+    }
+
+    const pengaturan = data.pengaturan || data;
+
+    const kepalaSekolah =
+      pengaturan.kepalaSekolah ||
+      pengaturan["Kepala Sekolah"] ||
+      "-";
+
+    const kota =
+      pengaturan.kotaKabupaten ||
+      pengaturan["Kota/Kabupaten"] ||
+      "-";
+
+    bukaJendelaLaporanKelasPDF({
+      kepalaSekolah: kepalaSekolah,
+      kotaKabupaten: kota
+    });
+  };
+
+  const script = document.createElement("script");
+  script.id = callback;
+  script.src =
+    APPS_SCRIPT_URL +
+    "?action=pengaturan" +
+    "&callback=" + encodeURIComponent(callback) +
+    "&_=" + Date.now();
+
+  script.onerror = function() {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+    alert(
+      "Tidak dapat mengambil data PENGATURAN. " +
+      "Periksa deployment Apps Script."
+    );
+  };
+
+  document.body.appendChild(script);
+
+  timer = setTimeout(function() {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+    alert(
+      "Waktu tunggu data PENGATURAN habis. " +
+      "Silakan periksa deployment Apps Script."
+    );
+  }, 12000);
+}
+
+function bukaJendelaLaporanKelasPDF(pengaturan) {
+  const hasil = document.getElementById("rekapKelasHasil");
+  const tabel = document.getElementById("rankingKelasTabel");
+
+  const teks = id =>
+    (document.getElementById(id)?.innerText || "-").trim();
+
+  const namaKelas = teks("rekapKelasNama");
+  const idKelas = teks("rekapKelasId").replace(/^ID Kelas:\s*/i, "");
+  const jumlah = teks("rekapKelasJumlahSiswa");
+  const positif = teks("rekapKelasPositif");
+  const negatif = teks("rekapKelasNegatif");
+  const saatIni = teks("rekapKelasSaatIni");
+  const transaksi = teks("rekapKelasTransaksi");
+
+  const wali =
+    waliKelasAktif ||
+    (document.getElementById("rekapKelasWali")?.innerText || "")
+      .replace(/^Wali Kelas:\s*/i, "")
+      .split(" • ")[0]
+      .trim() ||
+    "-";
+
+  let rows = "";
+
+  tabel.querySelectorAll("tbody tr").forEach(function(tr, i) {
+    const c = tr.querySelectorAll("td");
+    if (!c.length) return;
+
+    const v = Array.from(c).map(x => x.innerText.trim());
+
+    rows += `<tr>
+      <td class="center">${escapeHtmlLaporan((v[0] || String(i + 1)).replace(/[^\d]/g, "") || String(i + 1))}</td>
+      <td>${escapeHtmlLaporan(v[1] || "-")}</td>
+      <td class="center">${escapeHtmlLaporan(v[2] || "-")}</td>
+      <td class="num">${escapeHtmlLaporan(v[3] || "0")}</td>
+      <td class="num plus">${escapeHtmlLaporan(v[4] || "0")}</td>
+      <td class="num minus">${escapeHtmlLaporan(v[5] || "0")}</td>
+      <td class="num current">${escapeHtmlLaporan(v[6] || "0")}</td>
+      <td>${escapeHtmlLaporan(v[7] || "-")}</td>
+    </tr>`;
+  });
+
+  if (!rows) {
+    rows =
+      '<tr><td colspan="8" class="empty">Belum ada data siswa.</td></tr>';
+  }
+
+  const tanggal = tanggalIndonesiaLaporan(new Date());
+
+  const tahun =
+    (document.getElementById("dashboardTahun")?.innerText || "")
+      .match(/\d{4}\/\d{4}/)?.[0] || "2026/2027";
+
+  const win = window.open("", "_blank");
+
+  if (!win) {
+    alert(
+      "Jendela laporan diblokir browser. " +
+      "Silakan izinkan pop-up untuk SIPKAR."
+    );
+    return;
+  }
+
+  win.document.open();
+  win.document.write(`<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Laporan Rekap Kelas - SIPKAR</title>
+<style>
+@page{size:A4 landscape;margin:9mm 10mm 10mm}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#202020;font-family:Arial,Helvetica,sans-serif;font-size:9px;line-height:1.3}
+.report{width:277mm;max-width:277mm;margin:auto;overflow:hidden}
+.top-band{height:10mm;margin:-9mm -10mm 3mm;background:linear-gradient(135deg,#a90d13,#c9161d 62%,#8e0a0f);position:relative}
+.top-band:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5mm;background:#e9b72d}
+.school-head{display:grid;grid-template-columns:27mm 1fr 45mm;align-items:center;gap:4mm;border-bottom:1.3px solid #a90d13;padding:1mm 0 2.5mm}
+.logo{width:23mm;height:23mm;object-fit:contain;justify-self:center}
+.school-name{text-align:center;color:#a90d13;font-size:15px;font-weight:800;line-height:1.1}
+.school-sub{font-size:8px;color:#555;margin-top:1.5mm;letter-spacing:.8px}
+.side-motto{font-size:7px;color:#a90d13;text-align:center;font-weight:700;line-height:1.25}
+.title{text-align:center;margin:3mm 0 1mm;color:#a90d13;font-size:13px;font-weight:800;text-transform:uppercase}
+.subtitle{text-align:center;font-size:9px;margin-bottom:2.5mm}
+.section-title{background:linear-gradient(90deg,#a90d13,#cc1b21);color:#fff;font-weight:800;font-size:9.5px;padding:1.4mm 2.5mm;border-left:2mm solid #e8b62a;border-radius:1.5mm;margin:2.5mm 0 1.2mm;text-transform:uppercase}
+.identity{border:1px solid #d9c79d;border-radius:2mm;padding:2.5mm 4mm;background:linear-gradient(90deg,#fffaf0,#fff)}
+.identity-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.3mm 9mm}
+.field{display:grid;grid-template-columns:30mm 3mm 1fr;font-size:8.5px}
+.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:2.5mm}
+.summary-card{border:1px solid #d9c79d;border-radius:2mm;padding:2.2mm 1mm;text-align:center;background:linear-gradient(180deg,#fffdf8,#fff8e9)}
+.summary-card span{display:block;font-size:7px;color:#555}.summary-card strong{display:block;font-size:13px;margin-top:1mm}
+.summary-card.positive strong{color:#12813c}.summary-card.negative strong{color:#c51b20}.summary-card.current strong{color:#a90d13}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:7.7px}
+th{background:#fff2d6;font-weight:800}th,td{border:1px solid #d8c8a7;padding:1.25mm 1.1mm;vertical-align:middle;overflow-wrap:anywhere}
+th:nth-child(1){width:7%}th:nth-child(2){width:27%}th:nth-child(3){width:6%}th:nth-child(4){width:11%}th:nth-child(5){width:10%}th:nth-child(6){width:10%}th:nth-child(7){width:13%}th:nth-child(8){width:16%}
+.center{text-align:center}.num{text-align:center}.plus{color:#12813c;font-weight:800}.minus{color:#c51b20;font-weight:800}.current{color:#a90d13;font-weight:900}
+.empty{text-align:center;color:#777;font-style:italic;padding:4mm}
+.note{border:1px solid #d9c79d;border-radius:2mm;min-height:11mm;padding:2.5mm;background:#fffdf8;color:#555;font-style:italic}
+.signature{display:grid;grid-template-columns:1fr 1fr;gap:35mm;margin-top:4mm;page-break-inside:avoid}
+.sig{text-align:center}.sig-role{min-height:8mm}.sig-space{height:13mm}
+.sig-name{display:inline-block;border-bottom:1px solid #222;font-weight:700;padding-bottom:1mm}
+.footer{margin-top:3mm;border-top:1.2px solid #a90d13;padding-top:1.5mm;display:flex;justify-content:space-between;font-size:7px;color:#555}
+.bottom-band{height:5mm;margin:2mm -10mm -10mm;background:linear-gradient(90deg,#a90d13,#c9161d,#a90d13);border-top:1.5mm solid #e9b72d}
+@media print{body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="report">
+<div class="top-band"></div>
+<div class="school-head">
+<img class="logo" src="${typeof SIPKAR_LOGO_DATA !== "undefined" ? SIPKAR_LOGO_DATA : ""}" alt="Logo">
+<div class="school-name">
+SISTEM POIN KEDISIPLINAN DAN KARAKTER<br>
+SDIT AZZAHRAH
+<div class="school-sub">Berilmu • Berakhlak • Berprestasi</div>
+</div>
+<div class="side-motto">Disiplin Hari Ini<br>Karakter Masa Depan<br>Prestasi Selamanya</div>
+</div>
+
+<div class="title">Laporan Rekap Poin Kedisiplinan dan Karakter Peserta Didik</div>
+<div class="subtitle">Tahun Pelajaran ${escapeHtmlLaporan(tahun)}</div>
+
+<div class="section-title">A. Identitas Kelas</div>
+<div class="identity">
+<div class="identity-grid">
+<div class="field"><b>Kelas</b><span>:</span><span>${escapeHtmlLaporan(namaKelas)}</span></div>
+<div class="field"><b>ID Kelas</b><span>:</span><span>${escapeHtmlLaporan(idKelas)}</span></div>
+<div class="field"><b>Wali Kelas</b><span>:</span><span>${escapeHtmlLaporan(wali)}</span></div>
+</div>
+</div>
+
+<div class="section-title">B. Ringkasan Poin Kelas</div>
+<div class="summary">
+<div class="summary-card"><span>Jumlah Siswa</span><strong>${escapeHtmlLaporan(jumlah)}</strong></div>
+<div class="summary-card positive"><span>Poin Positif</span><strong>+${escapeHtmlLaporan(positif)}</strong></div>
+<div class="summary-card negative"><span>Poin Negatif</span><strong>-${escapeHtmlLaporan(negatif)}</strong></div>
+<div class="summary-card current"><span>Poin Saat Ini</span><strong>${escapeHtmlLaporan(saatIni)}</strong></div>
+<div class="summary-card"><span>Total Transaksi</span><strong>${escapeHtmlLaporan(transaksi)}</strong></div>
+</div>
+
+<div class="section-title">C. Ranking Poin Peserta Didik</div>
+<table>
+<thead><tr><th>Ranking</th><th>Nama Peserta Didik</th><th>JK</th><th>Poin Awal</th><th>Positif</th><th>Negatif</th><th>Poin Saat Ini</th><th>Status</th></tr></thead>
+<tbody>${rows}</tbody>
+</table>
+
+<div class="section-title">D. Catatan Perkembangan Kelas</div>
+<div class="note">Catatan perkembangan peserta didik dapat ditambahkan oleh wali kelas berdasarkan hasil pemantauan, pembinaan, dan perkembangan kedisiplinan peserta didik.</div>
+
+<div style="text-align:right;margin-top:3mm">${escapeHtmlLaporan(pengaturan.kotaKabupaten || "-")}, ${escapeHtmlLaporan(tanggal)}</div>
+
+<div class="signature">
+<div class="sig">
+<div class="sig-role">Mengetahui,<br>Kepala Sekolah</div>
+<div class="sig-space"></div>
+<div class="sig-name">${escapeHtmlLaporan(pengaturan.kepalaSekolah || "-")}</div>
+</div>
+<div class="sig">
+<div class="sig-role">Wali Kelas</div>
+<div class="sig-space"></div>
+<div class="sig-name">${escapeHtmlLaporan(wali)}</div>
+</div>
+</div>
+
+<div class="footer"><span>SIPKAR • Laporan Rekap Per Kelas</span><span>Dokumen hasil rekap data SIPKAR</span></div>
+<div class="bottom-band"></div>
+</div>
+</body>
+</html>`);
+
+  win.document.close();
+
+  setTimeout(function() {
+    win.focus();
+    win.print();
+  }, 500);
+}
+
 
 function bukaHalamanAdmin(halaman) {
 
@@ -2588,26 +3575,44 @@ function bukaHalamanAdmin(halaman) {
 
   const rekapPage =
     document.getElementById("adminRekapSiswaPage");
+  const rekapKelasPage =
+    document.getElementById("adminRekapKelasPage");
   const tindakPage =
     document.getElementById("adminTindakLanjutPage");
+  const suratPage =
+    document.getElementById("adminSuratPemanggilanPage");
+  const suratPeringatanPage =
+    document.getElementById("adminSuratPeringatanPage");
 
   const navDashboard =
     document.getElementById("navDashboard");
   const navRekap =
     document.getElementById("navRekapSiswa");
+  const navRekapKelas =
+    document.getElementById("navRekapKelas");
   const navTindak =
     document.getElementById("navTindakLanjut");
+  const navSurat =
+    document.getElementById("navSuratPemanggilan");
+  const navSuratPeringatan =
+    document.getElementById("navSuratPeringatan");
 
-  if (!dashboardPage || !rekapPage || !tindakPage) {
+  if (!dashboardPage || !rekapPage || !rekapKelasPage || !tindakPage || !suratPage || !suratPeringatanPage) {
     return;
   }
 
   dashboardPage.classList.remove("active");
   rekapPage.classList.remove("active");
+  rekapKelasPage.classList.remove("active");
   tindakPage.classList.remove("active");
+  suratPage.classList.remove("active");
+  suratPeringatanPage.classList.remove("active");
   if (navDashboard) navDashboard.classList.remove("active");
   if (navRekap) navRekap.classList.remove("active");
+  if (navRekapKelas) navRekapKelas.classList.remove("active");
   if (navTindak) navTindak.classList.remove("active");
+  if (navSurat) navSurat.classList.remove("active");
+  if (navSuratPeringatan) navSuratPeringatan.classList.remove("active");
 
   if (halaman === "rekapSiswa") {
     rekapPage.classList.add("active");
@@ -2617,10 +3622,33 @@ function bukaHalamanAdmin(halaman) {
     return;
   }
 
+  if (halaman === "rekapKelas") {
+    rekapKelasPage.classList.add("active");
+    if (navRekapKelas) navRekapKelas.classList.add("active");
+    siapkanPilihanRekapKelas();
+    return;
+  }
+
   if (halaman === "tindakLanjut") {
     tindakPage.classList.add("active");
     if (navTindak) navTindak.classList.add("active");
     muatTindakLanjut();
+    return;
+  }
+
+  if (halaman === "suratPemanggilan") {
+    suratPage.classList.add("active");
+    if (navSurat) navSurat.classList.add("active");
+    const input = document.getElementById("suratIdSiswa");
+    if (input) input.focus();
+    return;
+  }
+
+  if (halaman === "suratPeringatan") {
+    suratPeringatanPage.classList.add("active");
+    if (navSuratPeringatan) navSuratPeringatan.classList.add("active");
+    const input = document.getElementById("peringatanIdSiswa");
+    if (input) input.focus();
     return;
   }
 
@@ -3043,6 +4071,97 @@ th{background:#fff2d6;font-weight:800;color:#222}th,td{border:1px solid #d8c8a7;
 .center{text-align:center}.nilai{text-align:center;font-weight:800}.plus{color:#12813c}.minus{color:#c51b20}.empty{text-align:center;color:#777;font-style:italic;padding:4mm}.notes{border:1px solid #d9c79d;border-radius:2mm;min-height:17mm;padding:3mm;background:#fffdf8;color:#555;font-style:italic}.signature{display:grid;grid-template-columns:1fr 1fr;gap:15mm;margin-top:6mm;page-break-inside:avoid}.sig{text-align:center}.sig-role{min-height:9mm}.sig-space{height:16mm}.sig-name{display:inline-block;border-bottom:1px solid #222;font-weight:700;padding-bottom:1mm}.footer{margin-top:5mm;border-top:1.2px solid #a90d13;padding-top:2mm;display:flex;justify-content:space-between;font-size:7px;color:#555;page-break-inside:avoid}.bottom-band{height:6mm;margin:3mm -10mm -12mm;background:linear-gradient(90deg,#a90d13,#c9161d,#a90d13);border-top:1.5mm solid #e9b72d}
 .no-break{page-break-inside:avoid}
 @media print{html,body{width:190mm;margin:0;padding:0}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}.report{width:190mm;max-width:190mm;margin:0 auto;overflow:hidden}.print-actions{display:none!important}}
+
+/* =====================================================
+   V5.4.2 — RANKING POIN PER KELAS
+   ===================================================== */
+
+.ranking-kelas-card {
+  margin-top: 16px;
+}
+
+.ranking-medal {
+  display: inline-flex;
+  width: 30px;
+  justify-content: center;
+  font-size: 19px;
+}
+
+.ranking-number {
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.ranking-name {
+  font-weight: 800;
+}
+
+.ranking-id {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.ranking-poin {
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.ranking-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ranking-status-baik {
+  background: #e9f8ef;
+  color: #168447;
+}
+
+.ranking-status-pembinaan {
+  background: #fff5dc;
+  color: #9b6a00;
+}
+
+.ranking-status-tindak {
+  background: #fde9eb;
+  color: #b51218;
+}
+
+.ranking-row-first td {
+  background: #fffaf0;
+}
+
+.ranking-row-second td {
+  background: #fafafa;
+}
+
+.ranking-row-third td {
+  background: #fffdf8;
+}
+
+.ranking-summary-note {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media (max-width: 650px) {
+  .ranking-kelas-card .rekap-table {
+    min-width: 720px;
+  }
+}
+
+
+.rekap-kelas-report-action{margin:18px 0 14px;text-align:center}
+.btn-laporan-kelas{min-width:240px}
+
+#rekapKelasWali{font-weight:700}
 </style>
 </head>
 <body>
@@ -3913,6 +5032,214 @@ document.addEventListener("DOMContentLoaded", function() {
   
 
 // =====================================================
+// V5.5.6 - SURAT PEMANGGILAN ORANG TUA PDF
+// =====================================================
+let dataSuratPemanggilanAktif = null;
+function tanggalHariIniInput(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function muatDataSuratPemanggilan(){
+ if(!penggunaAktif||String(penggunaAktif.role||'').trim().toLowerCase()!=='admin')return;
+ const id=String(document.getElementById('suratIdSiswa')?.value||'').trim().toUpperCase(), st=document.getElementById('suratSiswaStatus'), ident=document.getElementById('suratIdentitas'), form=document.getElementById('suratForm');
+ if(!id){st.className='dashboard-error';st.innerText='❌ Masukkan ID siswa terlebih dahulu.';ident.style.display='none';form.style.display='none';return;}
+ st.className='dashboard-loading';st.innerText='Mengambil data siswa dari Google Sheets...';ident.style.display='none';form.style.display='none';
+ const cb='callbackDataSurat_'+Date.now(), sc=document.createElement('script');let done=false;sc.id=cb;
+ const clean=()=>{delete window[cb];if(sc.parentNode)sc.parentNode.removeChild(sc);};
+ window[cb]=function(data){if(done)return;done=true;clean();if(!data||data.berhasil!==true||!data.siswa){st.className='dashboard-error';st.innerText='❌ '+((data&&data.pesan)||'Data siswa tidak ditemukan.');return;}dataSuratPemanggilanAktif=data;const x=data.siswa;document.getElementById('suratNamaSiswa').innerText=x.nama||'-';document.getElementById('suratNisNisn').innerText='NIS/NISN: '+(x.nis||'-')+' / '+(x.nisn||'-');document.getElementById('suratKelas').innerText='Kelas: '+(x.kelas||'-');document.getElementById('suratWaliKelas').innerText='Wali Kelas: '+(data.waliKelas||'-');ident.style.display='flex';form.style.display='block';st.className='dashboard-success';st.innerText='✓ Data siswa berhasil diambil.';const t=document.getElementById('suratTanggalSurat');if(t&&!t.value)t.value=tanggalHariIniInput();};
+ sc.onerror=function(){if(done)return;done=true;clean();st.className='dashboard-error';st.innerText='❌ Tidak dapat menghubungi server SIPKAR.';};sc.src=APPS_SCRIPT_URL+'?action=dataSuratPemanggilan&idSiswa='+encodeURIComponent(id)+'&callback='+encodeURIComponent(cb)+'&_='+Date.now();document.body.appendChild(sc);
+}
+function formatTanggalSuratIndonesia_(value) {
+  const v = String(value || '').trim();
+  if (!v) return '';
+
+  // Jika berasal dari input type=date: YYYY-MM-DD
+  const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return v;
+
+  const bulan = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
+  const tahun = Number(m[1]);
+  const bulanIndex = Number(m[2]) - 1;
+  const tanggal = Number(m[3]);
+
+  if (!bulan[bulanIndex]) return v;
+  return tanggal + ' ' + bulan[bulanIndex] + ' ' + tahun;
+}
+
+function buatSuratPemanggilanPDF() {
+  if (!dataSuratPemanggilanAktif || !dataSuratPemanggilanAktif.siswa) {
+    alert("Silakan ambil data siswa terlebih dahulu.");
+    return;
+  }
+
+  const g = id => String(document.getElementById(id)?.value || "").trim();
+
+  const nomor = g("suratNomor");
+  const tanggal = formatTanggalSuratIndonesia_(g("suratTanggalSurat"));
+  const hari = g("suratHariTanggal");
+  const waktu = g("suratWaktu");
+  const tempat = g("suratTempat");
+  const kep = g("suratKeperluan");
+
+  const st = document.getElementById("suratGenerateStatus");
+  const btn = document.getElementById("btnBuatSuratPemanggilan");
+
+  if (!nomor || !tanggal || !hari || !waktu || !tempat || !kep) {
+    if (st) {
+      st.className = "dashboard-error";
+      st.innerText = "❌ Lengkapi semua isian surat terlebih dahulu.";
+    }
+    return;
+  }
+
+  if (!penggunaAktif || !penggunaAktif.idUser) {
+    if (st) {
+      st.className = "dashboard-error";
+      st.innerText = "❌ Sesi login tidak ditemukan. Silakan login kembali.";
+    }
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "⏳ Membuat PDF...";
+  }
+
+  if (st) {
+    st.className = "dashboard-loading";
+    st.innerText = "Menyiapkan Surat Pemanggilan PDF A4...";
+  }
+
+  const hasilLama = document.getElementById("hasilDownloadSurat");
+  if (hasilLama) hasilLama.style.display = "none";
+
+  const siswa = dataSuratPemanggilanAktif.siswa || {};
+
+  // V5.5.8:
+  // Logo TIDAK dikirim dari frontend.
+  // Apps Script V5.5.7 mengambil logo langsung dari
+  // PENGATURAN -> Logo_File_ID -> Google Drive.
+  // Ini membuat request JSONP jauh lebih kecil dan aman.
+  const payload = {
+    idUser: penggunaAktif.idUser,
+    idSiswa: siswa.idSiswa || "",
+    namaSekolah: dataSuratPemanggilanAktif.namaSekolah || "",
+    tahunPelajaran: dataSuratPemanggilanAktif.tahunPelajaran || "",
+    kepalaSekolah: dataSuratPemanggilanAktif.kepalaSekolah || "",
+    alamat: dataSuratPemanggilanAktif.alamat || "",
+    npsn: dataSuratPemanggilanAktif.npsn || "",
+    email: dataSuratPemanggilanAktif.email || dataSuratPemanggilanAktif.eMail || "",
+    kotaKabupaten: dataSuratPemanggilanAktif.kotaKabupaten || dataSuratPemanggilanAktif.kota || "Gowa",
+    wakilKepalaSekolah: dataSuratPemanggilanAktif.wakilKepalaSekolah || "",
+    nomorSurat: nomor,
+    tanggalSurat: tanggal,
+    hariTanggal: hari,
+    waktu: waktu,
+    tempat: tempat,
+    keperluan: kep,
+    namaSiswa: siswa.nama || "",
+    nis: siswa.nis || "",
+    nisn: siswa.nisn || "",
+    kelas: siswa.kelas || siswa.namaKelas || "",
+    waliKelas: dataSuratPemanggilanAktif.waliKelas || siswa.waliKelas || ""
+  };
+
+  const callback = "callbackBuatSuratPDF_" + Date.now();
+  const script = document.createElement("script");
+  let selesai = false;
+
+  script.id = callback;
+  script.async = true;
+
+  function bersihkan() {
+    delete window[callback];
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  window[callback] = function(data) {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "📄 Buat Surat Pemanggilan (PDF)";
+    }
+
+    if (!data || data.berhasil !== true) {
+      if (st) {
+        st.className = "dashboard-error";
+        st.innerText = "❌ " + ((data && data.pesan) || "Surat PDF gagal dibuat.");
+      }
+      return;
+    }
+
+    const fileName = data.fileName || "Surat Pemanggilan Orang Tua.pdf";
+    const downloadUrl = String(data.downloadUrl || "").trim();
+    const driveUrl = String(data.url || "").trim();
+
+    const hasil = document.getElementById("hasilDownloadSurat");
+    const namaFile = document.getElementById("namaFileSuratDownload");
+    const btnDownload = document.getElementById("btnDownloadSuratWord");
+    const btnDrive = document.getElementById("btnBukaSuratDrive");
+
+    if (namaFile) namaFile.textContent = fileName;
+
+    if (btnDownload) {
+      btnDownload.href = downloadUrl || driveUrl || "#";
+      btnDownload.download = fileName;
+      btnDownload.style.display = (downloadUrl || driveUrl) ? "block" : "none";
+      btnDownload.innerText = "⬇️ DOWNLOAD PDF";
+    }
+
+    if (btnDrive) {
+      btnDrive.href = driveUrl || downloadUrl || "#";
+      btnDrive.style.display = (driveUrl || downloadUrl) ? "block" : "none";
+      btnDrive.innerText = "📄 BUKA PDF";
+    }
+
+    if (hasil) hasil.style.display = "block";
+
+    if (st) {
+      st.className = "dashboard-success";
+      st.innerText = "✅ Surat Pemanggilan PDF berhasil dibuat. Silakan download atau buka PDF.";
+    }
+  };
+
+  script.onerror = function() {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "📄 Buat Surat Pemanggilan (PDF)";
+    }
+
+    if (st) {
+      st.className = "dashboard-error";
+      st.innerText = "❌ Tidak dapat menghubungi server SIPKAR.";
+    }
+  };
+
+  // JSONP tetap digunakan agar frontend lokal/GitHub Pages
+  // dapat berkomunikasi dengan Apps Script tanpa CORS.
+  // Tidak ada Base64 logo pada request V5.5.8.
+  script.src =
+    APPS_SCRIPT_URL +
+    "?action=buatSuratPemanggilanPDF" +
+    "&data=" +
+    encodeURIComponent(JSON.stringify(payload)) +
+    "&callback=" +
+    encodeURIComponent(callback) +
+    "&_=" +
+    Date.now();
+
+  document.body.appendChild(script);
+}
+
+// =====================================================
 // V5 - TINDAK LANJUT
 // READ-ONLY: MEMBACA ENDPOINT action=tindakLanjut
 // =====================================================
@@ -4294,6 +5621,8 @@ function ubahFormTindakLanjut() {
   const komitmenWrap = document.getElementById('formKomitmenWrap');
   const suratWrap = document.getElementById('formSuratWrap');
   const suratJudul = document.getElementById('formSuratJudul');
+  const suratHelp = document.getElementById('formSuratHelp');
+  const suratBtn = document.getElementById('btnBukaSuratDariTindak');
 
   if (tugasWrap) tugasWrap.style.display = jenis === 'Pembinaan Wali Kelas' ? 'flex' : 'none';
 
@@ -4301,14 +5630,59 @@ function ubahFormTindakLanjut() {
   if (konselingWrap) konselingWrap.style.display = isKonseling ? 'flex' : 'none';
   if (komitmenWrap) komitmenWrap.style.display = isKonseling ? 'flex' : 'none';
 
-  const isSurat = jenis === 'Pemanggilan Orang Tua' || jenis === 'Surat Peringatan';
+  const isPemanggilan = jenis === 'Pemanggilan Orang Tua';
+  const isSurat = isPemanggilan || jenis === 'Surat Peringatan';
+
   if (suratWrap) suratWrap.style.display = isSurat ? 'flex' : 'none';
 
   if (suratJudul) {
-    suratJudul.innerText = jenis === 'Pemanggilan Orang Tua'
+    suratJudul.innerText = isPemanggilan
       ? '📄 Surat Pemanggilan Orang Tua'
       : '📄 Surat Peringatan';
   }
+
+  if (suratHelp) {
+    suratHelp.innerText = isPemanggilan
+      ? 'Data siswa yang sedang diproses dapat langsung dibawa ke formulir pembuatan surat.'
+      : 'Fitur Surat Peringatan akan kita aktifkan setelah modulnya siap.';
+  }
+
+  if (suratBtn) {
+    suratBtn.disabled = !isPemanggilan;
+    suratBtn.innerText = isPemanggilan
+      ? '📄 Buat Surat Pemanggilan Orang Tua'
+      : '📄 Surat Peringatan — tahap berikutnya';
+    suratBtn.className = isPemanggilan
+      ? 'btn-login'
+      : 'btn-surat-placeholder';
+  }
+}
+
+function bukaSuratDariTindakLanjut() {
+  const jenis = document.getElementById('formJenisTindakLanjut')?.value || '';
+  if (jenis !== 'Pemanggilan Orang Tua') return;
+
+  const idSiswa = String(
+    document.getElementById('formTindakIdSiswa')?.value ||
+    document.getElementById('formIdSiswa')?.value ||
+    document.getElementById('inputTindakIdSiswa')?.value ||
+    document.getElementById('tindakIdSiswa')?.value ||
+    document.getElementById('formSiswaId')?.value ||
+    window.idSiswaTindakLanjutAktif ||
+    window.dataTindakLanjutAktif?.idSiswa ||
+    ''
+  ).trim().toUpperCase();
+
+  if (!idSiswa) {
+    alert('ID siswa belum tersedia. Silakan pilih atau muat data siswa terlebih dahulu.');
+    return;
+  }
+
+  const suratInput = document.getElementById('suratIdSiswa');
+  if (suratInput) suratInput.value = idSiswa;
+
+  bukaHalamanAdmin('suratPemanggilan');
+  muatDataSuratPemanggilan();
 }
 
 function tutupFormTindakLanjut() {
@@ -4498,6 +5872,229 @@ function simpanTindakLanjutFrontend() {
   }, 15000);
 }
 
+
+
+// =====================================================
+// V5.5.9 - SURAT PERINGATAN PDF
+// FRONTEND READ-ONLY + JSONP
+// =====================================================
+let dataSuratPeringatanAktif = null;
+
+function muatDataSuratPeringatan() {
+  if (!penggunaAktif || String(penggunaAktif.role || '').trim().toLowerCase() !== 'admin') return;
+
+  const id = String(document.getElementById('peringatanIdSiswa')?.value || '').trim().toUpperCase();
+  const status = document.getElementById('peringatanSiswaStatus');
+  const ident = document.getElementById('peringatanIdentitas');
+  const form = document.getElementById('peringatanForm');
+  const riwayatStatus = document.getElementById('peringatanRiwayatStatus');
+  const riwayat = document.getElementById('peringatanRiwayat');
+
+  if (!id) {
+    status.className = 'dashboard-error';
+    status.innerText = '❌ Masukkan ID siswa terlebih dahulu.';
+    ident.style.display = 'none';
+    form.style.display = 'none';
+    return;
+  }
+
+  status.className = 'dashboard-loading';
+  status.innerText = 'Mengambil data siswa dan riwayat pelanggaran...';
+  ident.style.display = 'none';
+  form.style.display = 'none';
+  if (riwayat) riwayat.innerHTML = '';
+  if (riwayatStatus) riwayatStatus.innerText = 'Memuat riwayat pelanggaran...';
+
+  const cb = 'callbackDataSuratPeringatan_' + Date.now();
+  const script = document.createElement('script');
+  script.id = cb;
+  script.async = true;
+  let selesai = false;
+
+  function bersihkan() {
+    delete window[cb];
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  window[cb] = function(data) {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+
+    if (!data || data.berhasil !== true || !data.siswa) {
+      status.className = 'dashboard-error';
+      status.innerText = '❌ ' + ((data && data.pesan) || 'Data surat peringatan tidak dapat diambil.');
+      return;
+    }
+
+    dataSuratPeringatanAktif = data;
+    const siswa = data.siswa || {};
+    const pelanggaran = Array.isArray(data.riwayatPelanggaran) ? data.riwayatPelanggaran : [];
+    const waka = data.wakilKepalaSekolah || data.wakaKesiswaan || '';
+
+    document.getElementById('peringatanNamaSiswa').innerText = siswa.nama || '-';
+    document.getElementById('peringatanNisNisn').innerText = 'NIS/NISN: ' + (siswa.nis || '-') + ' / ' + (siswa.nisn || '-');
+    document.getElementById('peringatanKelas').innerText = 'Kelas: ' + (siswa.kelas || '-');
+    document.getElementById('peringatanWaliKelas').innerText = 'Wali Kelas: ' + (data.waliKelas || '-');
+    document.getElementById('peringatanWaka').value = waka || '-';
+    document.getElementById('peringatanNamaWaka').innerText = waka || '-';
+
+    const tanggal = document.getElementById('peringatanTanggalSurat');
+    if (tanggal && !tanggal.value) tanggal.value = tanggalHariIniInput();
+
+    if (riwayat) {
+      if (!pelanggaran.length) {
+        riwayat.innerHTML = '<li>Tidak terdapat data pelanggaran.</li>';
+      } else {
+        riwayat.innerHTML = pelanggaran.map(function(item) {
+          const nama = String(item.namaPelanggaran || item.nama || '-').trim();
+          const tgl = String(item.tanggal || '').trim();
+          return '<li>' + escapeHtmlPeringatan_(nama) + (tgl ? ' <span>(' + escapeHtmlPeringatan_(tgl) + ')</span>' : '') + '</li>';
+        }).join('');
+      }
+    }
+
+    if (riwayatStatus) {
+      riwayatStatus.className = 'dashboard-success';
+      riwayatStatus.innerText = '✓ ' + pelanggaran.length + ' riwayat pelanggaran berhasil diambil.';
+    }
+
+    ident.style.display = 'flex';
+    form.style.display = 'block';
+    status.className = 'dashboard-success';
+    status.innerText = '✓ Data surat peringatan berhasil diambil dari Google Sheets.';
+  };
+
+  script.onerror = function() {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+    status.className = 'dashboard-error';
+    status.innerText = '❌ Tidak dapat menghubungi server SIPKAR.';
+  };
+
+  script.src = APPS_SCRIPT_URL +
+    '?action=dataSuratPeringatan' +
+    '&idSiswa=' + encodeURIComponent(id) +
+    '&callback=' + encodeURIComponent(cb) +
+    '&_=' + Date.now();
+
+  document.body.appendChild(script);
+}
+
+function escapeHtmlPeringatan_(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function buatSuratPeringatanPDF() {
+  if (!dataSuratPeringatanAktif || !dataSuratPeringatanAktif.siswa) {
+    alert('Silakan ambil data siswa terlebih dahulu.');
+    return;
+  }
+
+  if (!penggunaAktif || !penggunaAktif.idUser) {
+    const st = document.getElementById('peringatanGenerateStatus');
+    st.className = 'dashboard-error';
+    st.innerText = '❌ Sesi login tidak ditemukan. Silakan login kembali.';
+    return;
+  }
+
+  const nomor = String(document.getElementById('peringatanNomor')?.value || '').trim();
+  const tanggal = formatTanggalSuratIndonesia_(String(document.getElementById('peringatanTanggalSurat')?.value || '').trim());
+  const st = document.getElementById('peringatanGenerateStatus');
+  const btn = document.getElementById('btnBuatSuratPeringatan');
+
+  if (!nomor || !tanggal) {
+    st.className = 'dashboard-error';
+    st.innerText = '❌ Lengkapi nomor surat dan tanggal surat terlebih dahulu.';
+    return;
+  }
+
+  const data = dataSuratPeringatanAktif;
+  const siswa = data.siswa || {};
+  const pelanggaran = Array.isArray(data.riwayatPelanggaran) ? data.riwayatPelanggaran : [];
+
+  const payload = {
+    idUser: penggunaAktif.idUser,
+    idSiswa: siswa.idSiswa || '',
+    namaSekolah: data.namaSekolah || '',
+    tahunPelajaran: data.tahunPelajaran || '',
+    kepalaSekolah: data.kepalaSekolah || '',
+    alamat: data.alamat || '',
+    npsn: data.npsn || '',
+    email: data.email || data.eMail || '',
+    kotaKabupaten: data.kotaKabupaten || data.kota || 'Gowa',
+    wakilKepalaSekolah: data.wakilKepalaSekolah || data.wakaKesiswaan || '',
+    nomorSurat: nomor,
+    tanggalSurat: tanggal,
+    namaSiswa: siswa.nama || '',
+    nis: siswa.nis || '',
+    nisn: siswa.nisn || '',
+    kelas: siswa.kelas || '',
+    waliKelas: data.waliKelas || '',
+    riwayatPelanggaran: pelanggaran
+  };
+
+  st.className = 'dashboard-loading';
+  st.innerText = 'Membuat PDF Surat Peringatan...';
+  btn.disabled = true;
+  btn.innerText = '⏳ Membuat PDF...';
+
+  const cb = 'callbackBuatSuratPeringatanPDF_' + Date.now();
+  const script = document.createElement('script');
+  script.id = cb;
+  script.async = true;
+  let selesai = false;
+
+  function bersihkan() {
+    delete window[cb];
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  window[cb] = function(result) {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+    btn.disabled = false;
+    btn.innerText = '📄 Buat Surat Peringatan (PDF)';
+
+    if (!result || result.berhasil !== true) {
+      st.className = 'dashboard-error';
+      st.innerText = '❌ ' + ((result && result.pesan) || 'PDF gagal dibuat.');
+      return;
+    }
+
+    document.getElementById('namaFilePeringatanDownload').innerText = result.fileName || 'Surat Peringatan.pdf';
+    document.getElementById('btnDownloadPeringatan').href = result.downloadUrl || result.url || '#';
+    document.getElementById('btnBukaPeringatanDrive').href = result.url || '#';
+    document.getElementById('hasilDownloadPeringatan').style.display = 'block';
+    st.className = 'dashboard-success';
+    st.innerText = '✓ Surat Peringatan berhasil dibuat dalam format PDF.';
+  };
+
+  script.onerror = function() {
+    if (selesai) return;
+    selesai = true;
+    bersihkan();
+    btn.disabled = false;
+    btn.innerText = '📄 Buat Surat Peringatan (PDF)';
+    st.className = 'dashboard-error';
+    st.innerText = '❌ Tidak dapat menghubungi server SIPKAR.';
+  };
+
+  script.src = APPS_SCRIPT_URL +
+    '?action=buatSuratPeringatanPDF' +
+    '&data=' + encodeURIComponent(JSON.stringify(payload)) +
+    '&callback=' + encodeURIComponent(cb) +
+    '&_=' + Date.now();
+
+  document.body.appendChild(script);
+}
 </script>
 
 </body>
