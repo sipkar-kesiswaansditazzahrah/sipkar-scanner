@@ -8,7 +8,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-  <title>SIPKAR-SDITAZZAHRAH</title>
+  <title>SIPKAR - SDITAZZAHRAH</title>
 
   <script
     src="https://unpkg.com/html5-qrcode"
@@ -1551,6 +1551,185 @@ textarea {
   font-weight:700;
 }
 
+
+/* =====================================================
+   SIPKAR PRO UI — SDIT AZZAHRAH
+   Visual redesign only. Core JS and data flow unchanged.
+   ===================================================== */
+.sipkar-header-pro {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 18px 24px;
+  color: #fff;
+  background: linear-gradient(135deg, #075e54 0%, #0a7f68 48%, #126fa0 100%);
+  border: 0;
+  box-shadow: 0 12px 28px rgba(7,94,84,.18);
+}
+.sipkar-header-pro::before, .sipkar-header-pro::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  pointer-events: none;
+}
+.sipkar-header-pro::before { width: 190px; height: 190px; left: -90px; top: -105px; }
+.sipkar-header-pro::after { width: 230px; height: 230px; right: -110px; bottom: -165px; }
+.header-decor { position:absolute; opacity:.22; font-size:48px; z-index:0; }
+.header-decor-left { left:14px; top:12px; }
+.header-decor-right { right:20px; top:24px; transform:rotate(28deg); }
+.brand-pro { position:relative; z-index:1; display:flex; gap:10px; align-items:center; margin-bottom:4px; }
+.school-mark { width:54px; height:54px; border-radius:18px; display:grid; place-items:center; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:30px; box-shadow:inset 0 1px 0 rgba(255,255,255,.16); }
+.brand-copy { text-align:left; }
+.school-name { font-weight:900; font-size:15px; letter-spacing:.7px; }
+.school-motto { margin-top:2px; font-size:10px; opacity:.88; }
+.sipkar-wordmark { position:relative; z-index:1; margin-top:2px; font-size:43px; line-height:1; font-weight:900; letter-spacing:-1.8px; text-align:center; }
+.sipkar-wordmark span { color:#fff; }
+.sipkar-wordmark b { color:#ffd34d; }
+.header-subtitle-pro { position:relative; z-index:1; margin:7px 0 13px !important; color:rgba(255,255,255,.92) !important; font-size:13px !important; font-weight:600; }
+.header-badge-pro { position:relative; z-index:1; display:inline-block; padding:8px 16px; border-radius:999px; background:#7fe3a7; color:#075e54; font-size:12px; font-weight:900; box-shadow:0 6px 14px rgba(0,0,0,.10); }
+.scanner-heading-pro { display:flex; align-items:center; gap:12px; margin:2px 0 16px; }
+.scanner-icon-pro { width:56px; height:56px; flex:0 0 56px; display:grid; place-items:center; border-radius:18px; background:linear-gradient(135deg,#d8f7e8,#b8efd5); font-size:29px; }
+.scanner-heading-copy { flex:1; min-width:0; }
+.scanner-heading-copy h2 { margin:0; font-size:24px; letter-spacing:-.5px; }
+.scanner-heading-copy p { margin:5px 0 0; color:var(--muted); font-size:13px; line-height:1.35; }
+.scanner-help-pro { width:32px; height:32px; flex:0 0 32px; display:grid; place-items:center; border-radius:11px; background:#eaf3ff; color:#2463a8; font-weight:900; border:1px solid #cfe2fb; }
+.scanner-tip-pro { display:flex; gap:9px; align-items:flex-start; margin-top:12px; padding:11px 13px; border-radius:13px; background:#f1fbf6; border:1px solid #d4f0e1; color:#537067; font-size:12px; line-height:1.45; }
+.scanner-tip-pro span { font-size:16px; }
+#bagianScanner .card { padding:18px; border-radius:24px; }
+#reader { border-radius:20px; border:0; box-shadow:inset 0 0 0 1px rgba(255,255,255,.06); }
+#reader video { border-radius:20px 20px 0 0 !important; }
+.user-login { background:linear-gradient(135deg,#f8fcff,#eef7f4); border-color:#dce9e8; border-radius:17px; padding:13px 14px; }
+.btn-logout { padding:9px 13px; border-radius:11px; font-size:12px; }
+.sipkar-footer-pro { margin-top:24px; padding:22px 18px 26px; text-align:center; color:#fff; background:linear-gradient(135deg,#075e54,#064b45); border-radius:28px 28px 0 0; font-size:12px; line-height:1.7; }
+.footer-brand-pro { font-size:16px; margin-bottom:3px; }
+.footer-quote-pro { margin-top:8px; color:#ffd34d; font-weight:800; font-size:13px; }
+@media (min-width:701px) {
+  .sipkar-header-pro { padding-left:28px; padding-right:28px; }
+  .container { max-width:620px; }
+}
+@media (max-width:380px) {
+  .sipkar-wordmark { font-size:38px; }
+  .scanner-heading-copy h2 { font-size:21px; }
+  .scanner-heading-pro { gap:9px; }
+}
+
+
+/* =====================================================
+   SIPKAR UI V2 — IDENTITAS RESMI SDIT AZZAHRAH
+   VISUAL-ONLY: ID, fungsi, endpoint, dan alur lama dipertahankan.
+   ===================================================== */
+:root{
+  --primary:#a90d13;
+  --primary-dark:#7e080d;
+  --accent:#e9b72d;
+  --success:#168a55;
+  --danger:#b4232a;
+  --text:#172033;
+  --muted:#6b7280;
+  --surface:#fff;
+  --page:#f4f6f8;
+  --border:#e6e8ec;
+  --shadow:0 18px 45px rgba(72,18,20,.11);
+}
+body{
+  font-family:Inter,"Segoe UI",Arial,Helvetica,sans-serif;
+  background:radial-gradient(circle at 8% 6%,rgba(169,13,19,.06),transparent 26%),radial-gradient(circle at 92% 8%,rgba(233,183,45,.08),transparent 24%),linear-gradient(180deg,#fff 0%,#f5f6f8 48%,#eef1f4 100%);
+}
+.sipkar-header-pro{
+  position:relative;overflow:hidden;padding:22px 18px 26px;color:#fff;
+  background:linear-gradient(135deg,#8b0a10 0%,#b5121b 48%,#7b080d 100%);
+  border-bottom:4px solid #e9b72d;box-shadow:0 12px 30px rgba(95,10,15,.18);
+}
+.sipkar-header-pro:before,.sipkar-header-pro:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.sipkar-header-pro:before{width:380px;height:380px;left:-230px;top:-280px;background:rgba(255,255,255,.07)}
+.sipkar-header-pro:after{width:300px;height:300px;right:-180px;bottom:-250px;background:rgba(233,183,45,.13)}
+.header-inner-v2{position:relative;z-index:2;max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px}
+.header-school-v2{display:flex;align-items:center;gap:12px;text-align:left}
+.app-logo-v2{width:72px;height:72px;object-fit:contain;background:#fff;border-radius:16px;padding:5px;filter:drop-shadow(0 5px 8px rgba(0,0,0,.18))}
+.school-name-v2{font-size:15px;font-weight:900;line-height:1.05;letter-spacing:.4px}
+.school-motto-v2{font-size:10px;margin-top:6px;opacity:.92}
+.header-main-v2{text-align:center;min-width:350px}
+.sipkar-wordmark-v2{font-size:56px;line-height:.9;font-weight:950;letter-spacing:-2.5px;text-shadow:0 3px 12px rgba(0,0,0,.15)}
+.sipkar-wordmark-v2 b{color:#ffd34f}
+.header-subtitle-v2{font-size:13px;font-weight:700;margin-top:9px}
+.header-badge-v2{display:inline-block;margin-top:12px;padding:8px 19px;border-radius:999px;background:#f8cf62;color:#741015;font-size:12px;font-weight:900;box-shadow:0 5px 13px rgba(0,0,0,.12)}
+.header-values-v2{justify-self:end;text-align:left;font-size:13px;line-height:1.9}
+.header-values-v2 div{white-space:nowrap}.header-values-v2 span{margin-left:7px;font-weight:700}
+.container{max-width:720px;padding:28px 16px 44px}
+.card{border-radius:24px;border:1px solid rgba(169,13,19,.08);box-shadow:var(--shadow)}
+#halamanLogin{max-width:560px;margin:0 auto}
+#halamanLogin .card{padding:30px 32px 34px;position:relative;overflow:hidden}
+#halamanLogin .card:before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,#a90d13,#e9b72d,#a90d13)}
+.login-logo-wrap-v2{width:112px;height:112px;margin:3px auto 17px;display:grid;place-items:center;border-radius:32px;background:linear-gradient(145deg,#fff5f5,#fffaf0);border:1px solid #f0dcdc;box-shadow:0 12px 28px rgba(169,13,19,.10)}
+.login-logo-v2{width:88px;height:88px;object-fit:contain}
+.login-title{color:#8e0b12;font-size:29px}
+.login-subtitle{line-height:1.6;margin-bottom:26px}.login-subtitle span{color:#a90d13;font-weight:800}
+.login-field input{border-radius:14px;background:#fff;border:1px solid #dfe3e8;padding:16px}
+.login-field input:focus{border-color:#b5121b;box-shadow:0 0 0 4px rgba(169,13,19,.08)}
+.btn-login{background:linear-gradient(135deg,#b5121b,#8e0b12);border-radius:14px;box-shadow:0 10px 20px rgba(169,13,19,.20)}
+.login-btn-icon-v2{font-size:22px;vertical-align:-2px}
+.user-login{background:linear-gradient(135deg,#fff8f8,#fffdf8);border:1px solid #f0dddd;border-left:4px solid #a90d13;border-radius:17px;padding:14px 15px}
+.btn-logout{border-radius:11px;padding:9px 13px}
+.judul h2{color:#8e0b12}
+#reader{border:3px solid #f1e3e3;border-radius:20px;box-shadow:inset 0 0 0 1px #fff}
+.pesan{border:1px solid #f0e0e0;background:#fff8f8}
+@media(max-width:760px){
+  .header-inner-v2{grid-template-columns:1fr;gap:14px;text-align:center}
+  .header-school-v2{justify-content:center;text-align:center}
+  .header-main-v2{min-width:0}.sipkar-wordmark-v2{font-size:46px}
+  .app-logo-v2{width:62px;height:62px}
+  .header-values-v2{display:flex;justify-content:center;gap:15px;text-align:center;font-size:11px;line-height:1.25}
+  .header-values-v2 div{display:flex;flex-direction:column;align-items:center}.header-values-v2 span{margin:2px 0 0}
+  #halamanLogin .card{padding:28px 20px 30px}
+}
+@media(max-width:420px){.sipkar-header-pro{padding:18px 12px 22px}.school-name-v2{font-size:13px}.school-motto-v2{font-size:9px}.header-values-v2{gap:9px}.header-badge-v2{font-size:11px}}
+
+
+/* =====================================================
+   LOGIN V2.1 - POLISH
+   Tampilan saja; fungsi login/localStorage tidak diubah.
+   ===================================================== */
+#halamanLogin .card{
+  padding:34px 34px 30px;
+  background:rgba(255,255,255,.98);
+  border:1px solid #ead8d8;
+  box-shadow:0 22px 55px rgba(92,20,25,.12);
+}
+#halamanLogin .card:before{height:6px;background:linear-gradient(90deg,#8e0b12 0%,#b5121b 42%,#e9b72d 70%,#8e0b12 100%)}
+.login-title{font-size:30px;letter-spacing:-.7px;color:#1f2937;margin-top:4px}
+.login-title span{color:#8e0b12}
+.login-subtitle{font-size:14px;color:#7a8491;margin:8px 0 24px}
+.login-field{margin-top:16px}
+.login-field label{color:#263238;font-size:14px;margin-bottom:8px}
+.login-input-wrap-v2{position:relative;display:flex;align-items:center}
+.login-input-wrap-v2:focus-within{transform:translateY(-1px)}
+.login-input-icon-v2{position:absolute;left:15px;z-index:2;font-size:18px;opacity:.72;pointer-events:none}
+.login-input-wrap-v2 input{padding:15px 48px 15px 46px !important;border:1px solid #d7dce3;border-radius:14px;background:#fff;box-sizing:border-box;transition:.2s ease}
+.login-input-wrap-v2 input:focus{border-color:#b5121b;box-shadow:0 0 0 4px rgba(181,18,27,.09);outline:none}
+.toggle-password-v2{position:absolute;right:8px;width:40px;height:40px;border:0;background:transparent;border-radius:10px;cursor:pointer;font-size:18px;display:grid;place-items:center;opacity:.78}
+.toggle-password-v2:hover{background:#fff3f3;opacity:1}
+.toggle-password-v2:focus{outline:2px solid rgba(181,18,27,.22);outline-offset:1px}
+.login-pesan{display:none;min-height:0;margin-top:15px;padding:11px 13px;border-radius:12px;text-align:left;font-size:13px;line-height:1.45;color:#991b1b;background:#fff1f2;border:1px solid #fecdd3}
+.login-pesan:not(:empty){display:block}
+.login-pesan.success-v2{color:#166534;background:#f0fdf4;border-color:#bbf7d0}
+.btn-login{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;padding:15px 18px;border-radius:14px;background:linear-gradient(100deg,#a90d13 0%,#8e0b12 72%,#d99b18 72%,#edbb3c 100%);box-shadow:0 12px 24px rgba(142,11,18,.20);transition:.2s ease}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 15px 28px rgba(142,11,18,.24)}
+.btn-login:disabled{opacity:.7;transform:none}
+.login-btn-icon-v2{font-size:22px;line-height:1}
+.login-btn-text-v2{font-size:16px;letter-spacing:.4px}
+.login-btn-arrow-v2{font-size:25px;line-height:1;margin-left:8px}
+.login-divider-v2{display:flex;align-items:center;gap:12px;margin:20px 0 14px;color:#9ca3af;font-size:12px}
+.login-divider-v2:before,.login-divider-v2:after{content:"";height:1px;flex:1;background:#e5e7eb}
+.login-info-v2{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:13px;background:#f7f8fa;border:1px solid #e7e9ed;color:#59636e}
+.login-info-shield-v2{font-size:22px}
+.login-info-v2 strong{display:block;font-size:11.5px;font-weight:700;line-height:1.35}
+.login-info-v2 small{display:block;margin-top:3px;color:#a90d13;font-size:12px;font-weight:800}
+@media(max-width:420px){
+ #halamanLogin .card{padding:29px 18px 24px}
+ .login-title{font-size:27px}
+ .login-info-v2 strong{font-size:10.5px}
+}
+
 </style>
 
 
@@ -1560,18 +1739,428 @@ textarea {
 .surat-peringatan-list{margin:0;padding-left:24px;color:#111827}
 .surat-peringatan-list li{margin:5px 0;line-height:1.5}
 .surat-peringatan-sign{margin-top:14px;padding:12px 14px;border-radius:10px;background:#f8fafc;color:#111827}
+
+
+/* =====================================================
+   SIPKAR UI V2.3 — ADMIN DASHBOARD POLISH
+   Hanya tampilan; fungsi/ID/handler tetap dipertahankan.
+   ===================================================== */
+#dashboardAdmin{position:relative}
+
+#dashboardAdmin .admin-hero{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255,210,84,.18), transparent 22%),
+    radial-gradient(circle at 8% 95%, rgba(255,255,255,.08), transparent 24%),
+    linear-gradient(135deg,#8f1018 0%,#b5121b 48%,#6f0b12 100%);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 16px 34px rgba(111,11,18,.20);
+}
+
+#dashboardAdmin .admin-hero::before{
+  content:"";
+  position:absolute;
+  left:-45px; bottom:-60px;
+  width:170px; height:170px;
+  border:1px solid rgba(255,214,102,.22);
+  border-radius:50%;
+  box-shadow:0 0 0 18px rgba(255,214,102,.05),0 0 0 38px rgba(255,214,102,.035);
+}
+
+#dashboardAdmin .admin-hero::after{
+  content:"● SISTEM AKTIF";
+  position:absolute;
+  right:18px; top:18px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff8e6;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+
+#dashboardAdmin .admin-hero .admin-label{
+  color:#ffe8a3;
+  font-size:11px;
+  letter-spacing:1.3px;
+  font-weight:900;
+}
+
+#dashboardAdmin .admin-hero h2{
+  margin:8px 0 5px;
+  font-size:28px;
+  line-height:1.1;
+  letter-spacing:-.4px;
+}
+
+#dashboardAdmin .admin-hero p{
+  color:rgba(255,255,255,.88);
+  font-size:13px;
+}
+
+#dashboardAdmin .admin-actions{position:relative;z-index:2;margin-top:18px}
+#dashboardAdmin .admin-actions button{
+  border:1px solid rgba(255,220,130,.35);
+  background:rgba(255,255,255,.11);
+  backdrop-filter:blur(8px);
+  border-radius:12px;
+  padding:11px 13px;
+  transition:.18s ease;
+}
+#dashboardAdmin .admin-actions button:first-child{
+  background:linear-gradient(135deg,#ffd76b,#f0b92f);
+  color:#681017;
+  border-color:#ffe6a1;
+}
+#dashboardAdmin .admin-actions button:hover{transform:translateY(-1px)}
+
+#dashboardAdmin .admin-nav{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  padding:10px;
+  margin:14px 0;
+  background:#fff;
+  border:1px solid #ead7d7;
+  border-radius:18px;
+  box-shadow:0 8px 22px rgba(111,11,18,.07);
+}
+
+#dashboardAdmin .admin-nav button{
+  min-height:46px;
+  border:1px solid #eadede;
+  background:linear-gradient(180deg,#fff,#fff9f7);
+  color:#7c1118;
+  border-radius:12px;
+  padding:9px 8px;
+  font-size:12px;
+  font-weight:850;
+  box-shadow:none;
+  transition:.18s ease;
+}
+#dashboardAdmin .admin-nav button:hover{border-color:#d9aa68;transform:translateY(-1px)}
+#dashboardAdmin .admin-nav button.active{
+  background:linear-gradient(135deg,#a80f18,#7f0b12);
+  color:#fff;
+  border-color:#8e0d15;
+  box-shadow:0 7px 16px rgba(126,11,18,.18);
+}
+
+#dashboardAdmin .dashboard-grid{gap:12px}
+#dashboardAdmin .stat-card{
+  position:relative;
+  overflow:hidden;
+  border:1px solid #eadede;
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff,#fffafa);
+  box-shadow:0 8px 20px rgba(40,25,25,.055);
+  transition:.18s ease;
+}
+#dashboardAdmin .stat-card:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(40,25,25,.09)}
+#dashboardAdmin .stat-card::after{
+  content:"";
+  position:absolute;right:-28px;bottom:-32px;
+  width:88px;height:88px;border-radius:50%;
+  background:rgba(181,18,27,.055);
+}
+#dashboardAdmin .stat-card.positive::after{background:rgba(27,150,87,.07)}
+#dashboardAdmin .stat-card.negative::after{background:rgba(181,18,27,.08)}
+#dashboardAdmin .stat-icon{font-size:23px}
+#dashboardAdmin .stat-value{color:#7d1017}
+#dashboardAdmin .positive .stat-value{color:#178451}
+#dashboardAdmin .negative .stat-value{color:#b5121b}
+
+#dashboardAdmin .card:not(.admin-hero){
+  border-color:#eadede;
+  box-shadow:0 8px 20px rgba(40,25,25,.05);
+}
+
+#dashboardAdmin .dashboard-section-title h3{color:#7d1017}
+#dashboardAdmin .dashboard-section-title span{color:#8a7a7a}
+
+#dashboardAdmin .dashboard-loading{
+  border-radius:12px;
+}
+
+
+/* =====================================================
+   SIPKAR UI V2.3 — DASHBOARD CONTENT POLISH
+   VISUAL ONLY — tidak mengubah ID, handler, data, atau Apps Script.
+   ===================================================== */
+#dashboardAdmin .dashboard-kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:14px;
+}
+#dashboardAdmin .kpi-card{
+  position:relative;
+  overflow:hidden;
+  min-height:132px;
+  padding:17px 17px 15px;
+  border:1px solid #eadede;
+  border-radius:19px;
+  background:linear-gradient(145deg,#ffffff 0%,#fffafa 100%);
+  box-shadow:0 9px 22px rgba(63,25,28,.065);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+#dashboardAdmin .kpi-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 28px rgba(63,25,28,.10);
+}
+#dashboardAdmin .kpi-card::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,#8e0d15,#d7a63d);
+}
+#dashboardAdmin .kpi-card.kpi-positive::before{background:linear-gradient(90deg,#14804e,#6fbd8e)}
+#dashboardAdmin .kpi-card.kpi-negative::before{background:linear-gradient(90deg,#b5121b,#e36b70)}
+#dashboardAdmin .kpi-card.kpi-transaction::before{background:linear-gradient(90deg,#9b741b,#e0bf67)}
+#dashboardAdmin .kpi-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:13px;
+}
+#dashboardAdmin .kpi-icon{
+  width:39px;height:39px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:12px;
+  background:#fff0f0;
+  font-size:19px;
+  box-shadow:inset 0 0 0 1px #f2dede;
+}
+#dashboardAdmin .kpi-positive .kpi-icon{background:#edf9f2;box-shadow:inset 0 0 0 1px #d8efdf}
+#dashboardAdmin .kpi-negative .kpi-icon{background:#fff0f1;box-shadow:inset 0 0 0 1px #f2d8da}
+#dashboardAdmin .kpi-transaction .kpi-icon{background:#fff8e8;box-shadow:inset 0 0 0 1px #f1e4bf}
+#dashboardAdmin .kpi-caption{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  color:#a18f8f;
+}
+#dashboardAdmin .kpi-label{
+  color:#6e6161;
+  font-size:12px;
+  font-weight:800;
+}
+#dashboardAdmin .kpi-value{
+  margin-top:4px;
+  font-size:30px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-.7px;
+  color:#7d1017;
+}
+#dashboardAdmin .kpi-positive .kpi-value{color:#16804d}
+#dashboardAdmin .kpi-negative .kpi-value{color:#b5121b}
+#dashboardAdmin .kpi-transaction .kpi-value{color:#8a6815}
+#dashboardAdmin .dashboard-status-premium{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 13px;
+  margin-bottom:14px;
+  border:1px solid #eadede;
+  border-radius:13px;
+  background:linear-gradient(90deg,#fffafa,#fffdf7);
+  color:#756868;
+  font-size:12px;
+  font-weight:700;
+}
+#dashboardAdmin .dashboard-status-premium::before{
+  content:"✓";
+  width:23px;height:23px;
+  flex:0 0 23px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:#eaf8f0;
+  color:#14804e;
+  font-weight:950;
+}
+#dashboardAdmin .dashboard-main-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);
+  gap:14px;
+  margin-bottom:14px;
+}
+#dashboardAdmin .dashboard-main-grid .card{margin:0}
+#dashboardAdmin .dashboard-card-accent{
+  position:relative;
+  overflow:hidden;
+}
+#dashboardAdmin .dashboard-card-accent::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:4px;
+  background:linear-gradient(180deg,#b5121b,#d7a63d);
+}
+#dashboardAdmin .current-points-value{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  margin:4px 0 2px;
+}
+#dashboardAdmin .current-points-value #dashPoinSaatIni{margin:0}
+#dashboardAdmin .current-points-unit{
+  padding-bottom:3px;
+  color:#9a8989;
+  font-size:11px;
+  font-weight:800;
+}
+#dashboardAdmin .mini-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:15px;
+}
+#dashboardAdmin .mini-summary-item{
+  padding:10px;
+  border-radius:12px;
+  background:#faf6f5;
+  border:1px solid #eee2df;
+}
+#dashboardAdmin .mini-summary-item span{display:block;color:#927f7f;font-size:10px;font-weight:800}
+#dashboardAdmin .mini-summary-item b{display:block;margin-top:3px;color:#711018;font-size:14px}
+#dashboardAdmin .mini-summary-item.positive b{color:#16804d}
+#dashboardAdmin .mini-summary-item.negative b{color:#b5121b}
+#dashboardAdmin .dashboard-wide-card{margin-bottom:14px}
+#dashboardAdmin .section-badge{
+  padding:5px 8px;
+  border-radius:999px;
+  background:#fff4dd;
+  color:#8b6815;
+  font-size:10px;
+  font-weight:900;
+}
+#dashboardAdmin .section-badge.red{background:#fff0f0;color:#9e1720}
+#dashboardAdmin .section-badge.green{background:#edf9f2;color:#167347}
+#dashboardAdmin .rekap-table-wrap{box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+#dashboardAdmin .rekap-table tbody tr:hover{background:#fffafa}
+#dashboardAdmin .top-poin-item{background:linear-gradient(90deg,#fffafa,#faf7f6);border-color:#eee2df}
+#dashboardAdmin .top-rank{background:#fff0df;color:#8a6514;border:1px solid #f0dfb8}
+#dashboardAdmin .top-poin-item:nth-child(1) .top-rank{background:#fff1c9;color:#76550a}
+#dashboardAdmin .top-count{padding:6px 9px;border-radius:999px;background:#fff4dd;color:#8a6514;font-size:11px}
+
+@media(max-width:900px){
+  #dashboardAdmin .dashboard-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #dashboardAdmin .dashboard-main-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  #dashboardAdmin .dashboard-kpi-grid{gap:9px}
+  #dashboardAdmin .kpi-card{min-height:116px;padding:14px}
+  #dashboardAdmin .kpi-value{font-size:25px}
+  #dashboardAdmin .kpi-icon{width:34px;height:34px;font-size:16px}
+  #dashboardAdmin .mini-summary{grid-template-columns:1fr}
+}
+
+@media(max-width:700px){
+  #dashboardAdmin .admin-hero{padding:18px;border-radius:20px}
+  #dashboardAdmin .admin-hero h2{font-size:23px;padding-right:95px}
+  #dashboardAdmin .admin-hero::after{font-size:9px;right:13px;top:14px}
+  #dashboardAdmin .admin-nav{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px}
+  #dashboardAdmin .admin-nav button{min-height:44px;font-size:11px}
+}
+
+@media(max-width:390px){
+  #dashboardAdmin .admin-nav{grid-template-columns:1fr}
+}
+
 </style>
+
+<style>
+/* =====================================================
+   SIPKAR UI V2.4 — DASHBOARD VISUAL ANALYTICS
+   VISUAL ONLY. Data tetap berasal dari endpoint dashboard.
+   ===================================================== */
+#dashboardAdmin .dashboard-v24-grid{
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:14px;margin-bottom:14px;
+}
+#dashboardAdmin .v24-insight-card,#dashboardAdmin .v24-health-card,#dashboardAdmin .v24-class-card{
+  border:1px solid #eadede;border-radius:20px;background:linear-gradient(145deg,#fff 0%,#fffafa 100%);
+  box-shadow:0 9px 22px rgba(63,25,28,.055);
+}
+#dashboardAdmin .v24-card-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:16px}
+#dashboardAdmin .v24-card-head h3{margin:4px 0 4px;color:#7d1017;font-size:18px}
+#dashboardAdmin .v24-card-head p{margin:0;color:#907f7f;font-size:11px;line-height:1.5}
+#dashboardAdmin .v24-eyebrow{color:#a9822c;font-size:9px;font-weight:950;letter-spacing:1.1px}
+#dashboardAdmin .v24-live{padding:5px 8px;border-radius:999px;background:#edf9f2;color:#167347;font-size:9px;font-weight:950;border:1px solid #d9efdf}
+#dashboardAdmin .v24-insight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#dashboardAdmin .v24-insight-item{display:flex;gap:9px;align-items:flex-start;padding:11px;border:1px solid #eee2df;border-radius:14px;background:#fffafa}
+#dashboardAdmin .v24-insight-item.danger{background:#fff7f7;border-color:#f0dddd}
+#dashboardAdmin .v24-insight-item.gold{background:#fffaf0;border-color:#f0e5c8}
+#dashboardAdmin .v24-insight-icon{width:31px;height:31px;display:grid;place-items:center;border-radius:10px;background:#fff1d5;flex:0 0 31px;font-size:15px}
+#dashboardAdmin .v24-insight-item.danger .v24-insight-icon{background:#ffe8e9}
+#dashboardAdmin .v24-insight-item.gold .v24-insight-icon{background:#fff0c9}
+#dashboardAdmin .v24-insight-item small{display:block;color:#927f7f;font-size:9px;font-weight:800;line-height:1.35}
+#dashboardAdmin .v24-insight-item b{display:block;margin-top:4px;color:#701018;font-size:12px;line-height:1.25}
+#dashboardAdmin .v24-insight-item em{display:block;margin-top:2px;color:#a18f8f;font-size:9px;font-style:normal;font-weight:700}
+#dashboardAdmin .v24-donut-wrap{display:flex;align-items:center;gap:20px;min-height:125px}
+#dashboardAdmin .v24-donut{width:126px;height:126px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#1b9657 0deg,#1b9657 0deg,#b5121b 0deg,#b5121b 360deg);position:relative;flex:0 0 126px}
+#dashboardAdmin .v24-donut::after{content:"";position:absolute;inset:13px;border-radius:50%;background:#fff}
+#dashboardAdmin .v24-donut>div{position:relative;z-index:2;text-align:center}
+#dashboardAdmin .v24-donut b{display:block;color:#7d1017;font-size:24px;line-height:1}
+#dashboardAdmin .v24-donut span{display:block;margin-top:4px;color:#9a8989;font-size:9px;font-weight:800}
+#dashboardAdmin .v24-legend{display:flex;flex-direction:column;gap:12px}
+#dashboardAdmin .v24-legend>div{display:flex;align-items:center;gap:8px}
+#dashboardAdmin .v24-legend .dot{width:9px;height:9px;border-radius:50%;display:block}
+#dashboardAdmin .v24-legend .dot.positive{background:#1b9657}
+#dashboardAdmin .v24-legend .dot.negative{background:#b5121b}
+#dashboardAdmin .v24-legend small{display:block;color:#968686;font-size:9px}
+#dashboardAdmin .v24-legend b{display:block;color:#6f1017;font-size:13px;margin-top:1px}
+#dashboardAdmin .v24-class-card{margin-bottom:14px}
+#dashboardAdmin .v24-class-bars{display:flex;flex-direction:column;gap:11px}
+#dashboardAdmin .v24-class-row{display:grid;grid-template-columns:minmax(105px,.7fr) minmax(150px,1.5fr) auto;gap:10px;align-items:center}
+#dashboardAdmin .v24-class-name{font-size:11px;font-weight:850;color:#6e5d5d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dashboardAdmin .v24-class-track{height:10px;border-radius:999px;background:#f1e9e7;overflow:hidden}
+#dashboardAdmin .v24-class-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#9e1720,#d8a844)}
+#dashboardAdmin .v24-class-meta{font-size:10px;color:#8c7b7b;font-weight:800;min-width:72px;text-align:right}
+#dashboardAdmin .v24-class-empty{padding:14px;border-radius:12px;background:#faf7f6;color:#8c7b7b;font-size:12px;text-align:center}
+@media(max-width:900px){
+ #dashboardAdmin .dashboard-v24-grid{grid-template-columns:1fr}
+ #dashboardAdmin .v24-insight-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+ #dashboardAdmin .v24-donut-wrap{justify-content:center;flex-direction:column}
+ #dashboardAdmin .v24-class-row{grid-template-columns:1fr;gap:5px}
+ #dashboardAdmin .v24-class-meta{text-align:left}
+}
+</style>
+
 </head>
 
 
 <body>
 
-  <div class="header">
-    <div class="brand">
-      <div class="brand-icon">📋</div>
-      <h1>SIPKAR</h1>
+  <div class="header sipkar-header-pro">
+    <div class="header-inner-v2">
+      <div class="header-school-v2">
+        <img id="logoHeader" class="app-logo-v2" alt="Logo SDIT Azzahrah">
+        <div>
+          <div class="school-name-v2">SD ISLAM TERPADU<br>AZZAHRAH</div>
+          <div class="school-motto-v2">Berilmu • Berakhlak • Berprestasi</div>
+        </div>
+      </div>
+      <div class="header-main-v2">
+        <div class="sipkar-wordmark-v2"><span>SIP</span><b>KAR</b></div>
+        <div class="header-subtitle-v2">Sistem Informasi Poin Kedisiplinan dan Karakter</div>
+        <div class="header-badge-v2">“Karakter Kuat, Prestasi Hebat”</div>
+      </div>
+      <div class="header-values-v2">
+        <div>📖 <span>Berilmu</span></div>
+        <div>♡ <span>Berakhlak</span></div>
+        <div>🏆 <span>Berprestasi</span></div>
+      </div>
     </div>
-    <p>Sistem Informasi Poin Kedisiplinan dan Karakter</p>
   </div>
 
   <div class="container">
@@ -1583,43 +2172,72 @@ textarea {
     <div id="halamanLogin">
       <div class="card">
 
-        <div class="login-icon">🔐</div>
+        <div class="login-logo-wrap-v2">
+          <img id="logoLogin" class="login-logo-v2" alt="Logo SDIT Azzahrah">
+        </div>
 
-        <div class="login-title">Login SIPKAR</div>
+        <div class="login-title"><span>Login</span> SIPKAR</div>
 
         <div class="login-subtitle">
-          Masuk untuk menggunakan SIPKAR
+          Masuk untuk menggunakan SIPKAR<br>
+          <span>SDIT Azzahrah</span>
         </div>
 
         <div class="login-field">
           <label for="usernameLogin">Username</label>
-          <input
-            type="text"
-            id="usernameLogin"
-            placeholder="Masukkan username"
-            autocomplete="username"
-          >
+          <div class="login-input-wrap-v2">
+            <span class="login-input-icon-v2" aria-hidden="true">👤</span>
+            <input
+              type="text"
+              id="usernameLogin"
+              placeholder="Masukkan username"
+              autocomplete="username"
+            >
+          </div>
         </div>
 
         <div class="login-field">
           <label for="passwordLogin">Password</label>
-          <input
-            type="password"
-            id="passwordLogin"
-            placeholder="Masukkan password"
-            autocomplete="current-password"
-          >
+          <div class="login-input-wrap-v2">
+            <span class="login-input-icon-v2" aria-hidden="true">🔒</span>
+            <input
+              type="password"
+              id="passwordLogin"
+              placeholder="Masukkan password"
+              autocomplete="current-password"
+            >
+            <button
+              type="button"
+              id="togglePasswordLogin"
+              class="toggle-password-v2"
+              onclick="togglePasswordLogin()"
+              aria-label="Tampilkan password"
+              title="Tampilkan password"
+            >👁️</button>
+          </div>
         </div>
+
+        <div id="pesanLogin" class="login-pesan" role="alert" aria-live="polite"></div>
 
         <button
           id="btnLogin"
           class="btn-login"
           onclick="login()"
         >
-          🔐 MASUK
+          <span class="login-btn-icon-v2">↪</span>
+          <span class="login-btn-text-v2">MASUK</span>
+          <span class="login-btn-arrow-v2">›</span>
         </button>
 
-        <div id="pesanLogin" class="login-pesan"></div>
+        <div class="login-divider-v2"><span>atau</span></div>
+
+        <div class="login-info-v2">
+          <span class="login-info-shield-v2">🛡️</span>
+          <div>
+            <strong>Sistem Informasi Poin Kedisiplinan dan Karakter</strong>
+            <small>SDIT Azzahrah</small>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -1654,42 +2272,67 @@ textarea {
       <!-- HALAMAN DASHBOARD ADMIN -->
       <div id="adminDashboardPage" class="admin-page active">
 
-      <div id="dashboardStatus" class="dashboard-loading" style="margin-bottom:14px;">
-        Mengambil data terbaru...
+      <div id="dashboardStatus" class="dashboard-status-premium">
+        Mengambil data terbaru dari Google Sheets...
       </div>
 
-      <div class="dashboard-grid">
-        <div class="stat-card">
-          <div class="stat-icon">👨‍🎓</div>
-          <div class="stat-label">Total Siswa Aktif</div>
-          <div id="dashTotalSiswa" class="stat-value">-</div>
+      <div class="dashboard-kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon">👨‍🎓</div>
+            <div class="kpi-caption">Peserta Didik</div>
+          </div>
+          <div class="kpi-label">Total Siswa Aktif</div>
+          <div id="dashTotalSiswa" class="kpi-value">-</div>
         </div>
 
-        <div class="stat-card positive">
-          <div class="stat-icon">🟢</div>
-          <div class="stat-label">Total Poin Positif</div>
-          <div id="dashPositif" class="stat-value">-</div>
+        <div class="kpi-card kpi-positive">
+          <div class="kpi-top">
+            <div class="kpi-icon">⭐</div>
+            <div class="kpi-caption">Apresiasi</div>
+          </div>
+          <div class="kpi-label">Total Poin Positif</div>
+          <div id="dashPositif" class="kpi-value">-</div>
         </div>
 
-        <div class="stat-card negative">
-          <div class="stat-icon">🔴</div>
-          <div class="stat-label">Total Poin Negatif</div>
-          <div id="dashNegatif" class="stat-value">-</div>
+        <div class="kpi-card kpi-negative">
+          <div class="kpi-top">
+            <div class="kpi-icon">⚠️</div>
+            <div class="kpi-caption">Pembinaan</div>
+          </div>
+          <div class="kpi-label">Total Poin Negatif</div>
+          <div id="dashNegatif" class="kpi-value">-</div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-icon">📋</div>
-          <div class="stat-label">Total Transaksi</div>
-          <div id="dashTransaksi" class="stat-value">-</div>
+        <div class="kpi-card kpi-transaction">
+          <div class="kpi-top">
+            <div class="kpi-icon">📋</div>
+            <div class="kpi-caption">Aktivitas</div>
+          </div>
+          <div class="kpi-label">Total Transaksi</div>
+          <div id="dashTransaksi" class="kpi-value">-</div>
         </div>
       </div>
 
-      <div class="card">
+      <div class="dashboard-main-grid">
+      <div class="card dashboard-card-accent">
         <div class="dashboard-section-title">
-          <h3>💎 Total Poin Saat Ini</h3>
-          <span>Saldo seluruh siswa aktif</span>
+          <div>
+            <h3>💎 Total Poin Saat Ini</h3>
+            <span>Saldo seluruh siswa aktif</span>
+          </div>
+          <span class="section-badge">REAL-TIME</span>
         </div>
-        <div id="dashPoinSaatIni" class="stat-value">-</div>
+        <div class="current-points-value">
+          <div id="dashPoinSaatIni" class="stat-value">-</div>
+          <div class="current-points-unit">poin</div>
+        </div>
+
+        <div class="mini-summary">
+          <div class="mini-summary-item positive"><span>Poin Positif</span><b id="miniPositif">Lihat ringkasan</b></div>
+          <div class="mini-summary-item negative"><span>Poin Negatif</span><b id="miniNegatif">Lihat ringkasan</b></div>
+          <div class="mini-summary-item"><span>Komposisi</span><b id="miniKomposisi">-</b></div>
+        </div>
 
         <div class="balance-chart">
           <div class="balance-row">
@@ -1706,10 +2349,13 @@ textarea {
         </div>
       </div>
 
-      <div class="card">
+      <div class="card dashboard-card-accent">
         <div class="dashboard-section-title">
-          <h3>📈 Perbandingan Poin</h3>
-          <span>Positif vs Negatif</span>
+          <div>
+            <h3>📈 Perbandingan Poin</h3>
+            <span>Positif vs Negatif</span>
+          </div>
+          <span class="section-badge green">KARAKTER</span>
         </div>
 
         <div class="bar-chart">
@@ -1734,22 +2380,89 @@ textarea {
           </div>
         </div>
       </div>
+      </div>
 
-      <div class="card">
+      <div class="card dashboard-wide-card">
         <div class="dashboard-section-title">
-          <h3>🏫 Rekap Per Kelas</h3>
-          <span id="dashJumlahKelas">-</span>
+          <div>
+            <h3>🏫 Rekap Per Kelas</h3>
+            <span>Ringkasan poin berdasarkan kelas</span>
+          </div>
+          <span id="dashJumlahKelas" class="section-badge red">-</span>
         </div>
         <div id="dashRekapKelas" class="dashboard-loading">Memuat rekap kelas...</div>
       </div>
 
-      <div class="card">
+      <div class="card dashboard-wide-card">
         <div class="dashboard-section-title">
-          <h3>🏆 Poin Paling Sering Digunakan</h3>
-          <span>Top 5</span>
+          <div>
+            <h3>🏆 Poin Paling Sering Digunakan</h3>
+            <span>Jenis poin yang paling sering tercatat</span>
+          </div>
+          <span class="section-badge">TOP 5</span>
         </div>
         <div id="dashTopPoin" class="top-poin">
           <div class="dashboard-loading">Memuat data...</div>
+        </div>
+      </div>
+
+      <!-- V2.4 — ANALISIS CEPAT DASHBOARD -->
+      <div class="dashboard-v24-grid">
+        <div class="card v24-insight-card">
+          <div class="v24-card-head">
+            <div>
+              <div class="v24-eyebrow">RINGKASAN OTOMATIS</div>
+              <h3>🧭 Analisis Cepat Kesiswaan</h3>
+              <p>Ringkasan dihitung dari data dashboard yang sudah diterima.</p>
+            </div>
+            <span class="v24-live">LIVE</span>
+          </div>
+          <div class="v24-insight-grid">
+            <div class="v24-insight-item">
+              <span class="v24-insight-icon">⭐</span>
+              <div><small>Kelas dengan poin positif terbanyak</small><b id="v24KelasPositif">-</b><em id="v24NilaiPositif">- poin</em></div>
+            </div>
+            <div class="v24-insight-item danger">
+              <span class="v24-insight-icon">⚠️</span>
+              <div><small>Kelas dengan poin negatif terbanyak</small><b id="v24KelasNegatif">-</b><em id="v24NilaiNegatif">- poin</em></div>
+            </div>
+            <div class="v24-insight-item gold">
+              <span class="v24-insight-icon">🏫</span>
+              <div><small>Rata-rata poin saat ini per siswa</small><b id="v24RataRata">-</b><em>poin / siswa</em></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card v24-health-card">
+          <div class="v24-card-head">
+            <div>
+              <div class="v24-eyebrow">KESEIMBANGAN DATA</div>
+              <h3>⚖️ Kondisi Poin</h3>
+              <p>Perbandingan kontribusi poin positif dan negatif.</p>
+            </div>
+          </div>
+          <div class="v24-donut-wrap">
+            <div class="v24-donut" id="v24Donut">
+              <div><b id="v24DonutValue">0%</b><span>positif</span></div>
+            </div>
+            <div class="v24-legend">
+              <div><span class="dot positive"></span><div><small>Positif</small><b id="v24LegendPositif">0</b></div></div>
+              <div><span class="dot negative"></span><div><small>Negatif</small><b id="v24LegendNegatif">0</b></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card dashboard-wide-card v24-class-card">
+        <div class="dashboard-section-title">
+          <div>
+            <h3>📊 Gambaran Per Kelas</h3>
+            <span>Visual ringkas berdasarkan rekap kelas yang tersedia</span>
+          </div>
+          <span class="section-badge green">VISUAL</span>
+        </div>
+        <div id="v24ClassBars" class="v24-class-bars">
+          <div class="dashboard-loading">Menunggu data kelas...</div>
         </div>
       </div>
       </div>
@@ -2284,15 +2997,24 @@ textarea {
 
         <div id="infoPengguna" class="user-login"></div>
 
-        <div class="judul">
-          <h2>📷 Scan QR Siswa</h2>
-          <p>Arahkan kamera ke QR Code siswa</p>
+        <div class="scanner-heading-pro">
+          <div class="scanner-icon-pro">📷</div>
+          <div class="scanner-heading-copy">
+            <h2>Scan QR Siswa</h2>
+            <p>Arahkan kamera ke QR Code siswa untuk mencatat aktivitas</p>
+          </div>
+          <div class="scanner-help-pro">?</div>
         </div>
 
         <div id="reader"></div>
 
         <div id="pesan" class="pesan">
           Menunggu kamera...
+        </div>
+
+        <div class="scanner-tip-pro">
+          <span>💡</span>
+          <div><b>Tips:</b> pastikan QR Code siswa terlihat jelas dan berada di dalam kotak pemindaian.</div>
         </div>
 
       </div>
@@ -2432,6 +3154,19 @@ textarea {
 // LOGIN GURU
 // =====================================================
 
+
+// Toggle password — hanya mengubah tampilan input, tidak menyentuh proses login.
+function togglePasswordLogin(){
+  const input = document.getElementById("passwordLogin");
+  const button = document.getElementById("togglePasswordLogin");
+  if(!input || !button) return;
+  const tampil = input.type === "password";
+  input.type = tampil ? "text" : "password";
+  button.textContent = tampil ? "🙈" : "👁️";
+  button.setAttribute("aria-label", tampil ? "Sembunyikan password" : "Tampilkan password");
+  button.setAttribute("title", tampil ? "Sembunyikan password" : "Tampilkan password");
+}
+
 function login() {
 
   const username =
@@ -2449,8 +3184,9 @@ function login() {
 
   if (!username || !password) {
 
+    pesanLogin.classList.remove("success-v2");
     pesanLogin.innerText =
-      "Username dan password wajib diisi.";
+      "⚠️ Username dan password wajib diisi.";
 
     return;
   }
@@ -2463,6 +3199,7 @@ function login() {
 
   pesanLogin.innerText =
     "";
+  pesanLogin.classList.remove("success-v2");
 
 
   const namaCallback =
@@ -2477,8 +3214,9 @@ function login() {
 
       if (!hasil.berhasil) {
 
+        pesanLogin.classList.remove("success-v2");
         pesanLogin.innerText =
-          "❌ " + hasil.pesan;
+          "❌ " + (hasil.pesan || "Username atau password tidak sesuai.");
 
         btnLogin.disabled = false;
 
@@ -2534,8 +3272,9 @@ function login() {
 
       delete window[namaCallback];
 
+      pesanLogin.classList.remove("success-v2");
       pesanLogin.innerText =
-        "❌ Tidak dapat menghubungi server.";
+        "❌ Tidak dapat menghubungi server. Silakan periksa koneksi internet dan coba lagi.";
 
       btnLogin.disabled = false;
 
@@ -2706,6 +3445,12 @@ function muatDashboard() {
     transaksi.innerText = formatAngka(transaksiValue);
     poinSaatIni.innerText = formatAngka(saatIniValue);
 
+    const miniPositif = document.getElementById("miniPositif");
+    const miniNegatif = document.getElementById("miniNegatif");
+    const miniKomposisi = document.getElementById("miniKomposisi");
+    if (miniPositif) miniPositif.innerText = formatAngka(positifValue) + " poin";
+    if (miniNegatif) miniNegatif.innerText = formatAngka(negatifValue) + " poin";
+
     const totalGerak = positifValue + negatifValue;
 
     const persenPositif =
@@ -2726,6 +3471,7 @@ function muatDashboard() {
 
     document.getElementById("dashPersenNegatif").innerText =
       persenNegatif + "%";
+    if (miniKomposisi) miniKomposisi.innerText = persenPositif + "% positif";
 
     const nilaiMaks =
       Math.max(positifValue, negatifValue, 1);
@@ -2744,6 +3490,7 @@ function muatDashboard() {
 
     tampilkanRekapKelas(data.rekapKelas || []);
     tampilkanTopPoin(data.topPoin || []);
+    tampilkanDashboardV24(data.rekapKelas || [], positifValue, negatifValue, totalSiswaValue);
   };
 
   const script = document.createElement("script");
@@ -2771,6 +3518,74 @@ function muatDashboard() {
   };
 
   document.body.appendChild(script);
+}
+
+function tampilkanDashboardV24(data, positifValue, negatifValue, totalSiswaValue) {
+  const rows = Array.isArray(data) ? data.slice() : [];
+  const posEl = document.getElementById("v24KelasPositif");
+  const negEl = document.getElementById("v24KelasNegatif");
+  const posValEl = document.getElementById("v24NilaiPositif");
+  const negValEl = document.getElementById("v24NilaiNegatif");
+  const avgEl = document.getElementById("v24RataRata");
+  const donut = document.getElementById("v24Donut");
+  const donutValue = document.getElementById("v24DonutValue");
+  const legendPos = document.getElementById("v24LegendPositif");
+  const legendNeg = document.getElementById("v24LegendNegatif");
+  const classBars = document.getElementById("v24ClassBars");
+
+  const totalGerak = positifValue + negatifValue;
+  const persen = totalGerak > 0 ? Math.round((positifValue / totalGerak) * 100) : 0;
+  const deg = Math.round((persen / 100) * 360);
+
+  if (donut) donut.style.background = `conic-gradient(#1b9657 0deg ${deg}deg,#b5121b ${deg}deg 360deg)`;
+  if (donutValue) donutValue.innerText = persen + "%";
+  if (legendPos) legendPos.innerText = formatAngka(positifValue);
+  if (legendNeg) legendNeg.innerText = formatAngka(negatifValue);
+
+  if (!rows.length) {
+    if (posEl) posEl.innerText = "Belum ada data";
+    if (negEl) negEl.innerText = "Belum ada data";
+    if (posValEl) posValEl.innerText = "-";
+    if (negValEl) negValEl.innerText = "-";
+    if (avgEl) avgEl.innerText = "-";
+    if (classBars) classBars.innerHTML = '<div class="v24-class-empty">Data kelas belum tersedia.</div>';
+    return;
+  }
+
+  const normalized = rows.map(function(item) {
+    return {
+      nama: item.namaKelas || item.kelas || item.Nama_Kelas || "-",
+      siswa: ambilAngka(item, ["totalSiswa","jumlahSiswa","siswa"]),
+      positif: ambilAngka(item, ["totalPoinPositif","poinPositif","positif"]),
+      negatif: ambilAngka(item, ["totalPoinNegatif","poinNegatif","negatif"]),
+      saatIni: ambilAngka(item, ["totalPoinSaatIni","poinSaatIni","saatIni"])
+    };
+  });
+
+  const byPositive = normalized.slice().sort((a,b) => b.positif - a.positif)[0];
+  const byNegative = normalized.slice().sort((a,b) => b.negatif - a.negatif)[0];
+  const totalCurrent = normalized.reduce((sum,x) => sum + x.saatIni, 0);
+  const totalStudents = normalized.reduce((sum,x) => sum + x.siswa, 0);
+  const avg = totalStudents > 0 ? Math.round(totalCurrent / totalStudents) : 0;
+
+  if (posEl) posEl.innerText = byPositive ? byPositive.nama : "-";
+  if (negEl) negEl.innerText = byNegative ? byNegative.nama : "-";
+  if (posValEl) posValEl.innerText = byPositive ? formatAngka(byPositive.positif) + " poin" : "-";
+  if (negValEl) negValEl.innerText = byNegative ? formatAngka(byNegative.negatif) + " poin" : "-";
+  if (avgEl) avgEl.innerText = totalSiswaValue > 0 ? formatAngka(Math.round((positifValue - negatifValue + (totalSiswaValue * 150)) / totalSiswaValue)) : formatAngka(avg);
+
+  if (classBars) {
+    const topRows = normalized.slice().sort((a,b) => b.saatIni - a.saatIni).slice(0, 6);
+    const maxCurrent = Math.max(...topRows.map(x => x.saatIni), 1);
+    classBars.innerHTML = topRows.map(function(item) {
+      const width = Math.max(4, Math.round((item.saatIni / maxCurrent) * 100));
+      return `<div class="v24-class-row">
+        <div class="v24-class-name" title="${escapeHtml(item.nama)}">${escapeHtml(item.nama)}</div>
+        <div class="v24-class-track"><div class="v24-class-fill" style="width:${width}%"></div></div>
+        <div class="v24-class-meta">${formatAngka(item.saatIni)} poin</div>
+      </div>`;
+    }).join("");
+  }
 }
 
 function tampilkanRekapKelas(data) {
@@ -3549,6 +4364,12 @@ SDIT AZZAHRAH
 <div class="footer"><span>SIPKAR • Laporan Rekap Per Kelas</span><span>Dokumen hasil rekap data SIPKAR</span></div>
 <div class="bottom-band"></div>
 </div>
+  <footer class="sipkar-footer-pro">
+    <div class="footer-brand-pro">📖 <strong>SDIT Azzahrah</strong></div>
+    <div>Berilmu • Berakhlak • Berprestasi</div>
+    <div class="footer-quote-pro">Mulia Bersama Al-Qur’an</div>
+  </footer>
+
 </body>
 </html>`);
 
@@ -5010,6 +5831,17 @@ function perbaruiDataSiswaSetelahSimpan() {
 // =====================================================
 // JALANKAN APLIKASI
 // =====================================================
+
+function terapkanLogoResmiV2(){
+  try{
+    if(typeof SIPKAR_LOGO_DATA === "undefined") return;
+    ["logoHeader","logoLogin"].forEach(function(id){
+      const el=document.getElementById(id);
+      if(el) el.src=SIPKAR_LOGO_DATA;
+    });
+  }catch(error){ console.warn("Logo resmi belum dapat diterapkan:",error); }
+}
+terapkanLogoResmiV2();
 
 if (!prosesLogoutDariURL()) {
   cekLogin();
