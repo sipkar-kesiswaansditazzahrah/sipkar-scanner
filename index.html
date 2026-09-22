@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+<!-- SIPKAR V2.5 - Scanner Stability Fix -->
 
   <meta charset="UTF-8">
 
@@ -5152,8 +5153,36 @@ function prosesLogoutDariURL() {
 
 
   // =====================================================
-// MULAI SCANNER QR
-// =====================================================
+  // HENTIKAN SCANNER QR
+  // =====================================================
+
+  function hentikanScannerQR() {
+
+    if (!scannerAktif) {
+      return;
+    }
+
+    const scanner = scannerAktif;
+    scannerAktif = null;
+
+    try {
+      const hasilClear = scanner.clear();
+
+      // Html5QrcodeScanner.clear() dapat mengembalikan Promise.
+      if (hasilClear && typeof hasilClear.catch === "function") {
+        hasilClear.catch(function(error) {
+          console.log("Scanner clear:", error);
+        });
+      }
+    } catch (error) {
+      console.log("Scanner clear:", error);
+    }
+  }
+
+
+  // =====================================================
+  // MULAI SCANNER QR
+  // =====================================================
 
 function mulaiScanner() {
 
@@ -5204,6 +5233,10 @@ function mulaiScanner() {
 
   let jenisAktif = "";
 
+  // Penjaga agar satu QR tidak diproses berulang kali
+  // ketika kamera masih menerima frame yang sama.
+  let qrSedangDiproses = false;
+
 
   // =====================================================
   // ELEMENT
@@ -5240,10 +5273,24 @@ function mulaiScanner() {
 
   function qrBerhasil(qrText) {
 
+    // QR scanner dapat memanggil callback berkali-kali
+    // untuk QR yang sama dalam beberapa frame.
+    // Kunci proses sebelum mengambil data siswa.
+    if (qrSedangDiproses) {
+      return;
+    }
+
+    qrSedangDiproses = true;
+
     console.log("QR terbaca:", qrText);
 
     pesan.innerText =
-      "QR terbaca: " + qrText;
+      "QR terbaca. Menghentikan scanner...";
+
+    // Hentikan kamera SEGERA setelah QR berhasil dibaca.
+    // Ini mencegah form berkedip/reset karena QR yang sama
+    // terbaca berulang kali.
+    hentikanScannerQR();
 
     ambilDataSiswa(qrText);
 
@@ -5270,6 +5317,10 @@ function mulaiScanner() {
 
       pesan.innerText =
         "❌ Siswa tidak ditemukan.";
+
+      // Izinkan scan berikutnya.
+      qrSedangDiproses = false;
+      mulaiScanner();
 
       return;
     }
@@ -5320,8 +5371,13 @@ function mulaiScanner() {
 
     delete window[namaCallback];
 
+    qrSedangDiproses = false;
+
     pesan.innerText =
       "❌ Gagal mengambil data siswa.";
+
+    // Kembalikan scanner agar guru dapat mencoba lagi.
+    mulaiScanner();
   };
 
   document.body.appendChild(script);
@@ -5788,43 +5844,46 @@ function simpan() {
 
 function perbaruiDataSiswaSetelahSimpan() {
 
-  // Setelah transaksi berhasil,
-  // langsung kembali ke mode scan
+  // Transaksi sudah berhasil. Tidak perlu menunggu 1 detik.
+  // Kembalikan aplikasi langsung ke mode scan.
 
+  siswaAktif = null;
+  semuaPoin = [];
+  jenisAktif = "";
+
+  // Bersihkan data siswa
+  document.getElementById("nama").innerText = "";
+  document.getElementById("idSiswa").innerText = "";
+  document.getElementById("kelas").innerText = "";
+  document.getElementById("poin").innerText = "";
+
+  // Sembunyikan data siswa
+  dataSiswa.style.display = "none";
+
+  // Sembunyikan form
+  formPoin.style.display = "none";
+
+  // Tampilkan scanner
+  bagianScanner.style.display = "block";
+
+  // Reset form
+  resetForm();
+
+  // Pesan
+  pesan.innerText =
+    "Silakan scan QR siswa berikutnya.";
+
+  // Aktifkan tombol simpan kembali
+  btnSimpan.disabled = true;
+  btnSimpan.innerText =
+    "💾 SIMPAN POIN";
+
+  // Buka kembali scanner hanya setelah form lama
+  // selesai disembunyikan.
+  qrSedangDiproses = false;
   setTimeout(function() {
-
-    siswaAktif = null;
-    semuaPoin = [];
-    jenisAktif = "";
-
-    // Bersihkan data siswa
-    document.getElementById("nama").innerText = "";
-    document.getElementById("idSiswa").innerText = "";
-    document.getElementById("kelas").innerText = "";
-    document.getElementById("poin").innerText = "";
-
-    // Sembunyikan data siswa
-    dataSiswa.style.display = "none";
-
-    // Sembunyikan form
-    formPoin.style.display = "none";
-
-    // Tampilkan scanner
-    bagianScanner.style.display = "block";
-
-    // Reset form
-    resetForm();
-
-    // Pesan
-    pesan.innerText =
-      "Silakan scan QR siswa berikutnya.";
-
-    // Aktifkan tombol simpan kembali
-    btnSimpan.disabled = true;
-    btnSimpan.innerText =
-      "💾 SIMPAN POIN";
-
-  }, 1000);
+    mulaiScanner();
+  }, 150);
 
 }
 
