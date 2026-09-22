@@ -3206,25 +3206,10 @@ function login() {
   const namaCallback =
     "callbackLogin_" + Date.now();
 
-  let loginSelesai = false;
-  const timerLogin = setTimeout(function() {
-    if (loginSelesai) return;
-    loginSelesai = true;
-    delete window[namaCallback];
-    pesanLogin.classList.remove("success-v2");
-    pesanLogin.innerText =
-      "❌ Server belum merespons. Coba lagi atau gunakan jaringan lain.";
-    btnLogin.disabled = false;
-    btnLogin.innerText = "🔐 MASUK";
-  }, 15000);
-
 
   window[namaCallback] =
     function(hasil) {
 
-      if (loginSelesai) return;
-      loginSelesai = true;
-      clearTimeout(timerLogin);
       delete window[namaCallback];
 
 
@@ -3280,16 +3265,12 @@ function login() {
     "&password=" +
     encodeURIComponent(password) +
     "&callback=" +
-    namaCallback +
-    "&_=" + Date.now();
+    namaCallback;
 
 
   script.onerror =
     function() {
 
-      if (loginSelesai) return;
-      loginSelesai = true;
-      clearTimeout(timerLogin);
       delete window[namaCallback];
 
       pesanLogin.classList.remove("success-v2");
@@ -3350,8 +3331,7 @@ function masukKeSIPKAR() {
     "</b> " +
     '<button class="btn-logout" onclick="logout()">Keluar</button>';
 
-  pesan.innerText = "Menyiapkan kamera dan data poin...";
-  preloadMasterPoin();
+  pesan.innerText = "Menunggu kamera...";
   mulaiScanner();
 }
 
@@ -5178,23 +5158,25 @@ function prosesLogoutDariURL() {
 
   function hentikanScannerQR() {
 
-    if (!scannerAktif) return Promise.resolve();
+    if (!scannerAktif) {
+      return;
+    }
 
     const scanner = scannerAktif;
     scannerAktif = null;
 
     try {
       const hasilClear = scanner.clear();
-      if (hasilClear && typeof hasilClear.then === "function") {
-        return hasilClear.catch(function(error) {
+
+      // Html5QrcodeScanner.clear() dapat mengembalikan Promise.
+      if (hasilClear && typeof hasilClear.catch === "function") {
+        hasilClear.catch(function(error) {
           console.log("Scanner clear:", error);
         });
       }
     } catch (error) {
       console.log("Scanner clear:", error);
     }
-
-    return Promise.resolve();
   }
 
 
@@ -5202,16 +5184,24 @@ function prosesLogoutDariURL() {
   // MULAI SCANNER QR
   // =====================================================
 
-async function mulaiScanner() {
+function mulaiScanner() {
 
   const reader = document.getElementById("reader");
+
   if (!reader) {
     console.error("Elemen reader tidak ditemukan.");
     return;
   }
 
-  // Jangan membuat instance kamera kedua.
-  if (scannerAktif) return;
+  // Pastikan scanner lama tidak berjalan ganda.
+  if (scannerAktif) {
+    try {
+      scannerAktif.clear();
+    } catch (error) {
+      console.log(error);
+    }
+    scannerAktif = null;
+  }
 
   reader.innerHTML = "";
 
@@ -5219,9 +5209,14 @@ async function mulaiScanner() {
     "reader",
     {
       fps: 10,
-      qrbox: { width: 250, height: 250 },
+      qrbox: {
+        width: 250,
+        height: 250
+      },
       rememberLastUsedCamera: true,
-      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+      supportedScanTypes: [
+        Html5QrcodeScanType.SCAN_TYPE_CAMERA
+      ]
     },
     false
   );
@@ -5229,17 +5224,12 @@ async function mulaiScanner() {
   scannerAktif.render(
     qrBerhasil,
     function(error) {
-      // Error pembacaan frame diabaikan.
+      // Abaikan error pembacaan QR sementara
     }
   );
 }
 
   let semuaPoin = [];
-
-  // Cache master poin hanya selama sesi halaman.
-  // Tidak mengubah atau menyimpan ulang data Google Sheets.
-  const cachePoin = { Positif: null, Negatif: null };
-  const requestPoinAktif = { Positif: false, Negatif: false };
 
   let jenisAktif = "";
 
@@ -5281,27 +5271,29 @@ async function mulaiScanner() {
   // QR BERHASIL DIBACA
   // =====================================================
 
-  async function qrBerhasil(qrText) {
+  function qrBerhasil(qrText) {
 
-    if (qrSedangDiproses) return;
-    qrSedangDiproses = true;
-
-    const kode = String(qrText || "").trim();
-    if (!kode) {
-      qrSedangDiproses = false;
+    // QR scanner dapat memanggil callback berkali-kali
+    // untuk QR yang sama dalam beberapa frame.
+    // Kunci proses sebelum mengambil data siswa.
+    if (qrSedangDiproses) {
       return;
     }
 
-    console.log("QR terbaca:", kode);
-    pesan.innerText = "QR terbaca. Menghentikan scanner...";
+    qrSedangDiproses = true;
 
-    try {
-      await hentikanScannerQR();
-    } catch (error) {
-      console.log("Gagal menghentikan scanner:", error);
-    }
+    console.log("QR terbaca:", qrText);
 
-    ambilDataSiswa(kode);
+    pesan.innerText =
+      "QR terbaca. Menghentikan scanner...";
+
+    // Hentikan kamera SEGERA setelah QR berhasil dibaca.
+    // Ini mencegah form berkedip/reset karena QR yang sama
+    // terbaca berulang kali.
+    hentikanScannerQR();
+
+    ambilDataSiswa(qrText);
+
   }
 
 
@@ -5373,26 +5365,9 @@ async function mulaiScanner() {
     "?qr=" +
     encodeURIComponent(qrId) +
     "&callback=" +
-    namaCallback +
-    "&_=" + Date.now();
-
-  const timerSiswa = setTimeout(function() {
-    delete window[namaCallback];
-    try { script.remove(); } catch (e) {}
-    qrSedangDiproses = false;
-    pesan.innerText =
-      "❌ Server belum merespons. Silakan scan kembali.";
-    mulaiScanner();
-  }, 15000);
-
-  const callbackAsliSiswa = window[namaCallback];
-  window[namaCallback] = function(siswa) {
-    clearTimeout(timerSiswa);
-    callbackAsliSiswa(siswa);
-  };
+    namaCallback;
 
   script.onerror = function() {
-    clearTimeout(timerSiswa);
 
     delete window[namaCallback];
 
@@ -5418,101 +5393,112 @@ function pilihJenis(jenis) {
 
   jenisAktif = jenis;
 
-  const btnPositif = document.getElementById("btnPositif");
-  const btnNegatif = document.getElementById("btnNegatif");
+  const btnPositif =
+    document.getElementById("btnPositif");
 
-  btnPositif.classList.remove("aktif-positif");
-  btnNegatif.classList.remove("aktif-negatif");
+  const btnNegatif =
+    document.getElementById("btnNegatif");
 
+
+  // Reset tombol
+  btnPositif.classList.remove(
+    "aktif-positif"
+  );
+
+  btnNegatif.classList.remove(
+    "aktif-negatif"
+  );
+
+
+  // Aktifkan tombol yang dipilih
   if (jenis === "Positif") {
-    btnPositif.classList.add("aktif-positif");
+
+    btnPositif.classList.add(
+      "aktif-positif"
+    );
+
   } else {
-    btnNegatif.classList.add("aktif-negatif");
+
+    btnNegatif.classList.add(
+      "aktif-negatif"
+    );
+
   }
 
-  kategori.innerHTML = '<option value="">Memuat kategori...</option>';
-  poinSelect.innerHTML = '<option value="">Pilih poin</option>';
-  nilai.innerText = "-";
+
+  // Tampilkan status memuat
+  kategori.innerHTML =
+    '<option value="">Memuat kategori...</option>';
+
+  poinSelect.innerHTML =
+    '<option value="">Pilih poin</option>';
+
+  nilai.innerText =
+    "-";
+
   btnSimpan.disabled = true;
 
-  // Sudah ada di cache? Tampilkan tanpa request server.
-  if (Array.isArray(cachePoin[jenis])) {
-    semuaPoin = cachePoin[jenis];
-    isiKategori();
-    return;
-  }
 
-  muatPoinJenis(jenis, function(data) {
-    if (jenisAktif !== jenis) return;
-    semuaPoin = data;
-    isiKategori();
-  });
-}
+  // =====================================================
+  // CALLBACK JSONP
+  // =====================================================
 
-function muatPoinJenis(jenis, selesai) {
+  const namaCallback =
+    "callbackPoin_" + Date.now();
 
-  if (Array.isArray(cachePoin[jenis])) {
-    selesai(cachePoin[jenis]);
-    return;
-  }
 
-  if (requestPoinAktif[jenis]) return;
-  requestPoinAktif[jenis] = true;
+  window[namaCallback] =
+    function(data) {
 
-  const namaCallback = "callbackPoin_" + jenis + "_" + Date.now();
-  let selesaiRequest = false;
-  let timer = null;
+      // Hapus callback setelah selesai
+      delete window[namaCallback];
 
-  const beres = function(data, gagal) {
-    if (selesaiRequest) return;
-    selesaiRequest = true;
-    requestPoinAktif[jenis] = false;
-    if (timer) clearTimeout(timer);
-    delete window[namaCallback];
 
-    if (gagal || !Array.isArray(data)) {
-      if (jenisAktif === jenis) {
-        kategori.innerHTML = '<option value="">Gagal memuat kategori</option>';
-        poinSelect.innerHTML = '<option value="">Pilih poin</option>';
-        nilai.innerText = "-";
-      }
-      return;
-    }
+      // Simpan semua poin
+      semuaPoin = data;
 
-    cachePoin[jenis] = data;
-    selesai(data);
-  };
 
-  window[namaCallback] = function(data) {
-    beres(data, false);
-  };
+      // Isi kategori
+      isiKategori();
 
-  const script = document.createElement("script");
+    };
+
+
+  // =====================================================
+  // BUAT SCRIPT JSONP
+  // =====================================================
+
+  const script =
+    document.createElement("script");
+
+
   script.src =
     APPS_SCRIPT_URL +
     "?action=poin&jenis=" +
     encodeURIComponent(jenis) +
     "&callback=" +
-    namaCallback +
-    "&_=" + Date.now();
+    namaCallback;
 
-  script.onerror = function() {
-    beres(null, true);
-  };
 
-  timer = setTimeout(function() {
-    beres(null, true);
-  }, 15000);
+  script.onerror =
+    function() {
+
+      delete window[namaCallback];
+
+      kategori.innerHTML =
+        '<option value="">Gagal memuat kategori</option>';
+
+      poinSelect.innerHTML =
+        '<option value="">Pilih poin</option>';
+
+      nilai.innerText =
+        "-";
+
+    };
+
 
   document.body.appendChild(script);
-}
 
-function preloadMasterPoin() {
-  ["Positif", "Negatif"].forEach(function(jenis) {
-    if (!Array.isArray(cachePoin[jenis])) {
-      muatPoinJenis(jenis, function() {});
-    }
-  });
 }
 
 
@@ -5773,7 +5759,11 @@ function simpan() {
 
         btnSimpan.innerText =
           "💾 SIMPAN POIN";
+        setTimeout(function() {
+  location.reload();
+}, 1000);
 
+        
         return;
       }
 
@@ -5824,8 +5814,7 @@ function simpan() {
       keterangan
     ) +
     "&callback=" +
-    namaCallback +
-    "&_=" + Date.now();
+    namaCallback;
 
 
   script.onerror =
@@ -5892,7 +5881,9 @@ function perbaruiDataSiswaSetelahSimpan() {
   // Buka kembali scanner hanya setelah form lama
   // selesai disembunyikan.
   qrSedangDiproses = false;
-  mulaiScanner();
+  setTimeout(function() {
+    mulaiScanner();
+  }, 150);
 
 }
 
