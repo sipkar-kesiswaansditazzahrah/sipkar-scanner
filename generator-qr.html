@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIPKAR — Generator QR Siswa V2</title>
+
+<!-- Library QR dan ZIP -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<style>
+:root{--maroon:#B5121B;--gold:#D7A92A;--ink:#20242B;--muted:#69717D;--line:#E4E7EB}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f6f8;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.header{background:linear-gradient(135deg,#8f0f16,#B5121B);color:#fff;border-bottom:5px solid var(--gold)}
+.header-inner{max-width:1050px;margin:auto;padding:24px 18px;display:flex;align-items:center;gap:16px}
+.logo{width:68px;height:68px;border-radius:16px;background:#fff;color:#B5121B;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;font-size:16px}
+h1{margin:0;font-size:26px}.header p{margin:6px 0 0;opacity:.9}
+.wrap{max-width:1050px;margin:22px auto;padding:0 16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 25px #0000000a}
+h2{margin:0 0 8px;font-size:20px}.hint{font-size:14px;color:var(--muted);line-height:1.55}
+textarea{width:100%;min-height:190px;margin-top:12px;padding:13px;border:1px solid #d6dae0;border-radius:12px;font:14px Consolas,monospace}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}
+button{border:0;border-radius:11px;padding:13px 18px;font-weight:700;cursor:pointer}
+.primary{background:linear-gradient(90deg,#B5121B,#8f0f16);color:white}
+.gold{background:linear-gradient(90deg,#f2d36d,#D7A92A);color:#4b3800}
+.secondary{background:#eef0f3;color:#333}
+button:disabled{opacity:.5;cursor:not-allowed}
+.status{display:none;margin-top:14px;padding:13px;border-radius:11px;line-height:1.5}
+.status.show{display:block}.ok{background:#edf9f0;color:#176b39}.err{background:#fff0f0;color:#9a1b1b}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.stat{border:1px solid var(--line);border-radius:11px;padding:11px 15px;min-width:140px}.stat b{display:block;font-size:22px;color:#B5121B}
+.table-wrap{max-height:330px;overflow:auto;border:1px solid var(--line);border-radius:11px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left}th{position:sticky;top:0;background:#fafafa}
+.good{color:#16834b;font-weight:700}
+footer{text-align:center;color:#777;font-size:12px;padding:20px}
+@media(max-width:700px){.header-inner{align-items:flex-start}.header h1{font-size:21px}}
+</style>
+</head>
+<body>
+<header class="header">
+<div class="header-inner">
+<div class="logo">AZZ<br>AHRAH</div>
+<div><h1>SIPKAR — Generator QR Siswa</h1><p>SD Islam Terpadu Azzahrah • Kartu QR Peserta Didik</p></div>
+</div>
+</header>
+
+<main class="wrap">
+<section class="card">
+<h2>1. Masukkan Data Siswa</h2>
+<div class="hint">
+Paste data dari Google Sheets. Bisa menggunakan <b>A:I</b> atau format sederhana
+<b>ID | Nama | Kelas | QR_ID</b>. Untuk A:I, hanya siswa dengan Status <b>Aktif</b> yang diproses.
+</div>
+<textarea id="dataInput" placeholder="Contoh:
+S234	YASMIN KHUZAMI	Khadijah	S234"></textarea>
+<div class="actions">
+<button class="secondary" onclick="isiContoh()">Contoh</button>
+<button class="secondary" onclick="bersihkan()">Bersihkan</button>
+<button class="gold" onclick="prosesData()">🔎 Periksa Data</button>
+</div>
+<div id="status" class="status"></div>
+<div id="stats" class="stats" style="display:none"></div>
+</section>
+
+<section class="card" id="previewCard" style="display:none">
+<h2>2. Periksa Data</h2>
+<div class="hint">Periksa dulu sebelum membuat ZIP.</div><br>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>ID</th><th>Nama</th><th>Kelas</th><th>QR_ID</th><th>Status</th></tr></thead>
+<tbody id="previewBody"></tbody>
+</table></div>
+<div class="actions">
+<button id="generateBtn" class="primary" onclick="buatZip()" disabled>📦 Buat & Download ZIP QR</button>
+</div>
+</section>
+
+<section class="card">
+<h2>3. Catatan</h2>
+<div class="hint">
+QR dibuat <b>langsung di browser</b>. Isi QR hanya ID siswa, misalnya <b>S234</b>.
+Nama dan kelas hanya ditampilkan di kartu dan nama file.
+Tidak ada data yang dikirim kembali ke Google Sheets.
+</div>
+</section>
+</main>
+<footer>SIPKAR • Sistem Informasi Poin Kedisiplinan dan Karakter • SDIT Azzahrah</footer>
+
+<script>
+let siswaData=[];
+
+function ready(){
+  return typeof QRCode!=='undefined' && typeof JSZip!=='undefined';
+}
+function setStatus(msg,type=''){
+  const el=document.getElementById('status');
+  el.innerHTML=msg; el.className='status show '+type;
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function isiContoh(){
+  document.getElementById('dataInput').value='S001\tABDUL RAHMAN\tSalman Alfarizi\tS001';
+}
+function bersihkan(){
+  document.getElementById('dataInput').value='';
+  document.getElementById('previewCard').style.display='none';
+  document.getElementById('stats').style.display='none';
+  siswaData=[];
+  setStatus('');
+}
+function normal(v){return String(v??'').trim()}
+
+function parseData(){
+  const raw=document.getElementById('dataInput').value.trim();
+  if(!raw) throw new Error('Data masih kosong.');
+  const lines=raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  const rows=lines.map(x=>x.split(/\t/));
+  if(rows.length && /id[_ ]?siswa/i.test(rows[0][0]||'')) rows.shift();
+
+  const out=[],seen=new Set();
+  rows.forEach((r,i)=>{
+    let id,nama,kelas,status,qr;
+    if(r.length>=9){
+      id=normal(r[0]);nama=normal(r[3]);kelas=normal(r[5]);
+      status=normal(r[7]).toLowerCase();qr=normal(r[8]);
+      if(status && status!=='aktif') return;
+    }else if(r.length>=4){
+      id=normal(r[0]);nama=normal(r[1]);kelas=normal(r[2]);qr=normal(r[3]);status='aktif';
+    }else{
+      throw new Error('Baris '+(i+1)+' tidak memiliki 4 kolom.');
+    }
+    if(!id||!nama||!kelas||!qr)return;
+    if(seen.has(id))return;
+    seen.add(id);out.push({id,nama,kelas,qr});
+  });
+  if(!out.length)throw new Error('Tidak ada data siswa aktif yang valid.');
+  return out;
+}
+function prosesData(){
+  try{
+    siswaData=parseData();
+    const body=document.getElementById('previewBody');body.innerHTML='';
+    siswaData.forEach((s,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td>'+(i+1)+'</td><td><b>'+esc(s.id)+'</b></td><td>'+esc(s.nama)+'</td><td>'+esc(s.kelas)+'</td><td>'+esc(s.qr)+'</td><td class="good">Siap</td>';
+      body.appendChild(tr);
+    });
+    document.getElementById('previewCard').style.display='block';
+    document.getElementById('generateBtn').disabled=!ready();
+    document.getElementById('stats').style.display='flex';
+    document.getElementById('stats').innerHTML='<div class="stat"><b>'+siswaData.length+'</b>Siswa siap</div><div class="stat"><b>PNG</b>Format kartu</div><div class="stat"><b>ZIP</b>Satu file download</div>';
+    if(!ready()){
+      setStatus('❌ Library QR/ZIP belum termuat. Tutup file ini, pastikan internet aktif, lalu buka kembali.','err');
+    }else{
+      setStatus('✅ '+siswaData.length+' siswa siap. Tombol ZIP aktif.','ok');
+    }
+  }catch(e){siswaData=[];document.getElementById('generateBtn').disabled=true;setStatus('❌ '+esc(e.message),'err')}
+}
+
+function safeName(v){return String(v||'Siswa').replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,'_').replace(/_+/g,'_').slice(0,80)}
+
+function qrDataUrl(text){
+  return new Promise((resolve,reject)=>{
+    QRCode.toDataURL(text,{
+      width:600,margin:3,errorCorrectionLevel:'M',
+      color:{dark:'#111111',light:'#FFFFFF'}
+    },(err,url)=>err?reject(err):resolve(url));
+  });
+}
+function loadDataImage(url){
+  return new Promise((resolve,reject)=>{
+    const im=new Image();
+    im.onload=()=>resolve(im);
+    im.onerror=()=>reject(new Error('QR tidak dapat dimuat ke kartu.'));
+    im.src=url;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  const rr=Math.min(r,w/2,h/2);
+  ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);
+  ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);
+  ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
+}
+async function makeCard(s){
+  const dataUrl=await qrDataUrl(s.qr);
+  const qr=await loadDataImage(dataUrl);
+
+  const W=1000,H=1250,c=document.createElement('canvas');
+  c.width=W;c.height=H;
+  const ctx=c.getContext('2d');
+
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#B5121B';ctx.fillRect(0,0,W,150);
+  ctx.fillStyle='#fff';ctx.textAlign='center';
+  ctx.font='700 38px Arial';ctx.fillText('SD ISLAM TERPADU AZZAHRAH',W/2,60);
+  ctx.fillStyle='#FFE69A';ctx.font='600 22px Arial';ctx.fillText('SIPKAR • KARTU QR PESERTA DIDIK',W/2,102);
+  ctx.fillStyle='#D7A92A';ctx.fillRect(0,150,W,7);
+
+  ctx.strokeStyle='#D7A92A';ctx.lineWidth=5;
+  roundRect(ctx,180,205,640,640,24);ctx.stroke();
+  ctx.drawImage(qr,200,225,600,600);
+
+  ctx.textAlign='center';
+  ctx.fillStyle='#B5121B';ctx.font='700 38px Arial';ctx.fillText(s.id,W/2,905);
+  ctx.fillStyle='#20242B';ctx.font=s.nama.length>29?'700 28px Arial':'700 34px Arial';
+  ctx.fillText(s.nama.toUpperCase(),W/2,965);
+  ctx.fillStyle='#59616B';ctx.font='24px Arial';ctx.fillText('Kelas: '+s.kelas,W/2,1015);
+  ctx.fillStyle='#9A7415';ctx.font='600 19px Arial';ctx.fillText('Scan QR untuk input SIPKAR',W/2,1095);
+
+  return new Promise((resolve,reject)=>{
+    c.toBlob(b=>b?resolve(b):reject(new Error('Gagal membuat PNG.')),'image/png');
+  });
+}
+
+async function buatZip(){
+  if(!siswaData.length){setStatus('❌ Periksa data terlebih dahulu.','err');return}
+  if(!ready()){setStatus('❌ Library QR/ZIP belum siap. Refresh halaman dengan internet aktif.','err');return}
+  const btn=document.getElementById('generateBtn');btn.disabled=true;
+  const zip=new JSZip();let sukses=0,gagal=[];
+  try{
+    for(let i=0;i<siswaData.length;i++){
+      const s=siswaData[i];
+      try{
+        const blob=await makeCard(s);
+        zip.file(s.id+'_'+safeName(s.nama)+'.png',blob);
+        sukses++;
+      }catch(e){gagal.push(s.id+' - '+s.nama+': '+e.message)}
+      setStatus('⏳ Membuat kartu '+(i+1)+'/'+siswaData.length+' • berhasil '+sukses,'');
+      await new Promise(r=>setTimeout(r,0));
+    }
+    if(!sukses)throw new Error('Tidak ada kartu QR yang berhasil dibuat.');
+    setStatus('⏳ Mengemas ZIP '+sukses+' kartu...','');
+    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}},
+      meta=>setStatus('⏳ Mengemas ZIP: '+Math.round(meta.percent)+'%',''));
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='SIPKAR_QR_SISWA_'+new Date().toISOString().slice(0,10)+'.zip';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+    let msg='✅ SELESAI<br><b>'+sukses+'</b> kartu QR berhasil dibuat. Download ZIP sudah dimulai.';
+    if(gagal.length)msg+='<br><br>⚠️ Gagal '+gagal.length+' siswa:<br>'+gagal.slice(0,8).map(esc).join('<br>');
+    setStatus(msg,'ok');
+  }catch(e){setStatus('❌ '+esc(e.message),'err')}
+  finally{btn.disabled=false}
+}
+</script>
+</body>
+</html>
