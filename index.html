@@ -7355,6 +7355,8 @@ function batalPilihManualV71(){
 function simpanHadirManualV71(){
   if(v71AbsensiProcessing)return;
   if(!v71EkskulAktif || !v71PertemuanAktif){alert("Pilih ekstrakurikuler dan pertemuan terlebih dahulu.");return;}
+  const tanggal=ambilTanggalAbsensiV71();
+  if(!tanggal){alert("Silakan pilih tanggal absensi terlebih dahulu.");return;}
   if(!v71SiswaManualTerpilih || !v71SiswaManualTerpilih.idSiswa){alert("Silakan pilih siswa terlebih dahulu.");return;}
   if(!penggunaAktif || !penggunaAktif.idUser){alert("Sesi pengguna tidak ditemukan. Silakan login kembali.");return;}
   v71AbsensiProcessing=true;
@@ -7368,7 +7370,7 @@ function simpanHadirManualV71(){
   status.innerText="Menyimpan absensi...";
   v71Jsonp("simpanAbsensiEkskul",{idSiswa:siswa.idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,tanggal:tanggal,idUser:penggunaAktif.idUser},function(data){
     if(data && data.berhasil){
-      if(hasil){hasil.style.display="block";hasil.innerHTML='<strong>'+escapeHtmlV71(data.namaSiswa||siswa.nama)+'</strong><div class="v71-hadir">✓ HADIR</div><div>'+escapeHtmlV71(data.waktuScan||"")+'</div>';}
+      if(hasil){hasil.style.display="block";hasil.innerHTML='<strong>'+escapeHtmlV71(data.namaSiswa||siswa.nama)+'</strong><div class="v71-hadir">✓ HADIR</div><div>'+escapeHtmlV71(data.waktu||data.waktuScan||"")+'</div>';}
       status.className="v71-status ok";
       status.innerText="✓ Absensi berhasil disimpan.";
       mainStatus.className="v71-status ok";
