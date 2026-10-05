@@ -3106,6 +3106,13 @@ body{
               <option value="">Pilih pertemuan</option>
             </select>
           </div>
+          <div class="v71-field">
+            <label for="v71TanggalAbsensi">Tanggal Absensi</label>
+            <input id="v71TanggalAbsensi" type="date" autocomplete="off">
+            <small style="display:block;margin-top:5px;color:#777">
+              Tanggal ditentukan oleh guru/petugas saat absensi.
+            </small>
+          </div>
         </div>
         <div id="v71AbsensiStatus" class="v71-status">Pilih ekstrakurikuler dan pertemuan.</div>
         <div id="v71AbsensiReader" style="display:none;margin-top:14px"></div>
@@ -7215,8 +7222,22 @@ function isiPertemuanV71(){
   for(let i=1;i<=20;i++) el.innerHTML += '<option value="'+i+'">Pertemuan '+i+'</option>';
 }
 
+function siapkanTanggalAbsensiV71(){
+  const el=document.getElementById("v71TanggalAbsensi");
+  if(!el)return;
+  if(!el.value){
+    const now=new Date();
+    el.value=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
+  }
+}
+function ambilTanggalAbsensiV71(){
+  const el=document.getElementById("v71TanggalAbsensi");
+  return el?String(el.value||"").trim():"";
+}
+
 function siapkanPilihanEkskulV71(){
   isiPertemuanV71();
+  siapkanTanggalAbsensiV71();
   const el=document.getElementById("v71EkskulSelect");
   el.innerHTML='<option value="">Memuat ekstrakurikuler...</option>';
   v71Jsonp("masterEkskul",{},function(data){
@@ -7250,10 +7271,11 @@ function bukaAbsensiManualV71(){
   const input=document.getElementById("v71CariNamaSiswa");
   const hasil=document.getElementById("v71ManualResults");
   const terpilih=document.getElementById("v71ManualSelected");
-  if(!v71EkskulAktif || !v71PertemuanAktif){
+  const tanggal=ambilTanggalAbsensiV71();
+  if(!v71EkskulAktif || !v71PertemuanAktif || !tanggal){
     const mainStatus=document.getElementById("v71AbsensiStatus");
     mainStatus.className="v71-status err";
-    mainStatus.innerText="❌ Pilih ekstrakurikuler dan pertemuan terlebih dahulu.";
+    mainStatus.innerText="❌ Pilih ekstrakurikuler, pertemuan, dan tanggal terlebih dahulu.";
     return;
   }
   panel.style.display="block";
@@ -7344,7 +7366,7 @@ function simpanHadirManualV71(){
   btns.forEach(function(btn){btn.disabled=true;});
   status.className="v71-status";
   status.innerText="Menyimpan absensi...";
-  v71Jsonp("simpanAbsensiEkskul",{idSiswa:siswa.idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,idUser:penggunaAktif.idUser},function(data){
+  v71Jsonp("simpanAbsensiEkskul",{idSiswa:siswa.idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,tanggal:tanggal,idUser:penggunaAktif.idUser},function(data){
     if(data && data.berhasil){
       if(hasil){hasil.style.display="block";hasil.innerHTML='<strong>'+escapeHtmlV71(data.namaSiswa||siswa.nama)+'</strong><div class="v71-hadir">✓ HADIR</div><div>'+escapeHtmlV71(data.waktuScan||"")+'</div>';}
       status.className="v71-status ok";
@@ -7382,7 +7404,8 @@ function mulaiAbsensiEkskulV71(){
   v71EkskulAktif=document.getElementById("v71EkskulSelect").value;
   v71PertemuanAktif=document.getElementById("v71PertemuanSelect").value;
   const status=document.getElementById("v71AbsensiStatus");
-  if(!v71EkskulAktif || !v71PertemuanAktif){ status.className="v71-status err"; status.innerText="❌ Pilih ekstrakurikuler dan pertemuan terlebih dahulu."; return; }
+  const tanggal=ambilTanggalAbsensiV71();
+  if(!v71EkskulAktif || !v71PertemuanAktif || !tanggal){ status.className="v71-status err"; status.innerText="❌ Pilih ekstrakurikuler, pertemuan, dan tanggal terlebih dahulu."; return; }
   v71ModeGuru="absensi"; v71AbsensiProcessing=false;
   document.getElementById("absensiEkskulGuruV71").classList.add("active");
   document.getElementById("v71AbsensiReader").style.display="block";
@@ -7404,7 +7427,7 @@ async function qrBerhasilV71Absensi(qrText){
   try{await hentikanScannerQR();}catch(e){}
   const status=document.getElementById("v71AbsensiStatus");
   status.className="v71-status"; status.innerText="Memeriksa peserta...";
-  v71Jsonp("simpanAbsensiEkskul",{idSiswa:idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,idUser:(penggunaAktif&&penggunaAktif.idUser)||""},function(data){
+  v71Jsonp("simpanAbsensiEkskul",{idSiswa:idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,tanggal:ambilTanggalAbsensiV71(),idUser:(penggunaAktif&&penggunaAktif.idUser)||""},function(data){
     const hasil=document.getElementById("v71AbsensiHasil"); hasil.style.display="block";
     if(data && data.berhasil){
       hasil.innerHTML='<strong>'+escapeHtmlV71(data.namaSiswa||idSiswa)+'</strong><div class="v71-hadir">✓ HADIR</div><div>'+escapeHtmlV71(data.waktuScan||"")+'</div>';
@@ -7441,24 +7464,55 @@ function siapkanAdminAbsensiEkskulV71(){
   rowsKelas.forEach(x=>{const id=x.idKelas||x.ID_Kelas||x.id||x.namaKelas||x.Nama_Kelas||"";const nama=x.namaKelas||x.Nama_Kelas||x.nama||id;if(id||nama)k.innerHTML+='<option value="'+escapeHtmlV71(id)+'">'+escapeHtmlV71(nama)+'</option>';});
 }
 function muatRekapAbsensiEkskulV71(){
-  const eks=document.getElementById("v71AdminEkskul").value, bulan=document.getElementById("v71AdminBulan").value, tahun=document.getElementById("v71AdminTahun").value, kelas=document.getElementById("v71AdminKelas").value, st=document.getElementById("v71AdminStatus"), out=document.getElementById("v71AdminHasil");
+  const eks=document.getElementById("v71AdminEkskul").value;
+  const bulan=document.getElementById("v71AdminBulan").value;
+  const tahun=document.getElementById("v71AdminTahun").value;
+  const kelas=document.getElementById("v71AdminKelas").value;
+  const st=document.getElementById("v71AdminStatus");
+  const out=document.getElementById("v71AdminHasil");
   if(!eks){st.className="v71-status err";st.innerText="❌ Pilih ekstrakurikuler.";return;}
   st.className="v71-status";st.innerText="Mengambil rekap...";out.style.display="none";
   v71Jsonp("rekapAbsensiEkskul",{idEkskul:eks,bulan:bulan,tahun:tahun,idKelas:kelas},function(data){
     if(!data||data.berhasil===false){st.className="v71-status err";st.innerText="❌ "+((data&&data.pesan)||"Rekap gagal diambil.");return;}
-    v71AdminDataTerakhir=data; const rows=Array.isArray(data.data)?data.data:(Array.isArray(data.rekap)?data.rekap:[]);
-    let totalPertemuan=data.totalPertemuan||data.jumlahPertemuan||0; let html='<div class="v71-kpi"><div><span>Total Pertemuan</span><b>'+escapeHtmlV71(totalPertemuan)+'</b></div><div><span>Total Peserta</span><b>'+escapeHtmlV71(data.totalPeserta||rows.length)+'</b></div><div><span>Total Kehadiran</span><b>'+escapeHtmlV71(data.totalHadir||rows.reduce((a,x)=>a+Number(x.totalHadir||x.hadir||0),0))+'</b></div></div>';
-    html+='<div class="v71-table-wrap"><table class="v71-table"><thead><tr><th>No</th><th>Nama Siswa</th><th>Kelas</th><th>Hadir</th><th>Persentase</th></tr></thead><tbody>';
-    rows.forEach((x,i)=>{html+='<tr><td>'+(i+1)+'</td><td>'+escapeHtmlV71(x.namaSiswa||x.nama||x.Nama_Siswa||x.idSiswa||'-')+'</td><td>'+escapeHtmlV71(x.kelas||x.namaKelas||'-')+'</td><td>'+escapeHtmlV71(x.totalHadir||x.hadir||0)+'</td><td>'+escapeHtmlV71(x.persentase==null?((totalPertemuan?Number(x.totalHadir||x.hadir||0)/Number(totalPertemuan)*100:0).toFixed(1)+'%'):x.persentase)+'</td></tr>';});
-    html+='</tbody></table></div>'; out.innerHTML=html; out.style.display="block"; st.className="v71-status ok"; st.innerText="✓ Rekap berhasil diambil (read only).";
+    v71AdminDataTerakhir=data;
+    const rows=Array.isArray(data.data)?data.data:[];
+    const pertemuan=Array.isArray(data.pertemuan)?data.pertemuan:[];
+    const totalPertemuan=Number(data.totalPertemuan||pertemuan.length||0);
+    const totalPeserta=Number(data.totalPeserta||rows.length||0);
+    const totalHadir=Number(data.totalHadir||rows.reduce((a,x)=>a+Number(x.totalHadir||0),0));
+    let html='<div class="v71-kpi"><div><span>Total Pertemuan</span><b>'+escapeHtmlV71(totalPertemuan)+'</b></div><div><span>Total Peserta</span><b>'+escapeHtmlV71(totalPeserta)+'</b></div><div><span>Total Kehadiran</span><b>'+escapeHtmlV71(totalHadir)+'</b></div></div>';
+    html+='<div class="v71-table-wrap"><table class="v71-table v71-rekap-ekskul-table"><thead><tr><th>No</th><th>Nama Siswa</th><th>Kelas</th>';
+    pertemuan.forEach(function(p){
+      const key=String(p.pertemuan||p.P||p.nomor||"");
+      const t=p.tanggal||"";
+      html+='<th>P'+escapeHtmlV71(key)+(t?'<br><small>'+escapeHtmlV71(t)+'</small>':'')+'</th>';
+    });
+    html+='<th>Hadir</th><th>Persentase</th></tr></thead><tbody>';
+    rows.forEach(function(x,i){
+      html+='<tr><td>'+(i+1)+'</td><td>'+escapeHtmlV71(x.namaSiswa||x.nama||x.Nama_Siswa||x.idSiswa||'-')+'</td><td>'+escapeHtmlV71(x.kelas||x.namaKelas||'-')+'</td>';
+      pertemuan.forEach(function(p){
+        const key=String(p.pertemuan||p.P||p.nomor||"");
+        let hadir=false;
+        if(x.detail&&typeof x.detail==='object') hadir=!!(x.detail[key]||x.detail['P'+key]);
+        if(!hadir&&x.pertemuan&&typeof x.pertemuan==='object') hadir=!!(x.pertemuan[key]||x.pertemuan['P'+key]);
+        if(!hadir&&x.kehadiran&&typeof x.kehadiran==='object') hadir=!!(x.kehadiran[key]||x.kehadiran['P'+key]);
+        html+='<td class="v71-hadir-cell">'+(hadir?'✓':'')+'</td>';
+      });
+      const hadirTotal=Number(x.totalHadir||x.hadir||0);
+      const persen=x.persentase==null?(totalPertemuan?(hadirTotal/totalPertemuan*100).toFixed(1)+'%':'0%'):x.persentase;
+      html+='<td>'+escapeHtmlV71(hadirTotal)+'</td><td>'+escapeHtmlV71(persen)+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+    out.innerHTML=html;out.style.display="block";st.className="v71-status ok";st.innerText="✓ Rekap berhasil diambil (read only).";
   },function(err){st.className="v71-status err";st.innerText="❌ "+err.message;});
 }
 function cetakRekapAbsensiEkskulV71(){
   if(!v71AdminDataTerakhir){alert("Tampilkan rekap terlebih dahulu.");return;}
-  const d=v71AdminDataTerakhir; const w=window.open("","_blank"); if(!w){alert("Pop-up diblokir browser.");return;}
+  const w=window.open("","_blank"); if(!w){alert("Pop-up diblokir browser.");return;}
   const namaEks=document.getElementById("v71AdminEkskul").selectedOptions[0]?.text||"Ekstrakurikuler";
-  const bulan=document.getElementById("v71AdminBulan").selectedOptions[0]?.text||""; const tahun=document.getElementById("v71AdminTahun").value;
-  w.document.write('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Rekap Absensi Ekskul - '+escapeHtmlV71(namaEks)+'</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#222}h1{font-size:20px;color:#8f1018}table{width:100%;border-collapse:collapse}th,td{border:1px solid #aaa;padding:7px;font-size:12px}th{background:#8f1018;color:#fff}.head{text-align:center;margin-bottom:18px}.sig{display:flex;justify-content:space-between;margin-top:55px;text-align:center}.sig>div{width:42%}</style></head><body><div class="head"><b>SEKOLAH ISLAM TERPADU AZZAHRAH</b><h1>REKAP ABSENSI EKSTRAKURIKULER</h1><div>'+escapeHtmlV71(namaEks)+' • '+escapeHtmlV71(bulan)+' '+escapeHtmlV71(tahun)+'</div></div>'+ (document.getElementById("v71AdminHasil")?.innerHTML||"") + '<div class="sig"><div>Mengetahui,<br>Wali/Koordinator</div><div>Wakil Kepala Sekolah<br>Bidang Kesiswaan<br><br><br><b>Nur Abdillah Kasim, S.Pd., Gr.</b></div></div></body></html>');
+  const bulan=document.getElementById("v71AdminBulan").selectedOptions[0]?.text||"";
+  const tahun=document.getElementById("v71AdminTahun").value;
+  w.document.write('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Rekap Absensi Ekskul - '+escapeHtmlV71(namaEks)+'</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#222}h1{font-size:20px;color:#8f1018}table{width:100%;border-collapse:collapse}th,td{border:1px solid #aaa;padding:7px;font-size:12px;text-align:center}th{background:#8f1018;color:#fff}td:nth-child(2){text-align:left}.head{text-align:center;margin-bottom:18px}.sig{margin-top:55px;text-align:right}.sig>div{display:inline-block;min-width:260px;text-align:center}.v71-hadir-cell{font-size:18px;font-weight:700}.v71-rekap-ekskul-table th small{font-weight:400;font-size:10px}</style></head><body><div class="head"><b>SEKOLAH ISLAM TERPADU AZZAHRAH</b><h1>REKAP ABSENSI EKSTRAKURIKULER</h1><div>'+escapeHtmlV71(namaEks)+' • '+escapeHtmlV71(bulan)+' '+escapeHtmlV71(tahun)+'</div></div>'+ (document.getElementById("v71AdminHasil")?.innerHTML||"") + '<div class="sig"><div>Mengetahui,<br>Wakil Kepala Sekolah<br>Bidang Kesiswaan<br><br><br><b>Nur Abdillah Kasim, S.Pd., Gr.</b></div></div></body></html>');
   w.document.close(); setTimeout(function(){w.focus();w.print();},500);
 }
 
