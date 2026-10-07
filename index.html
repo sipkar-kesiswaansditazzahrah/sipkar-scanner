@@ -5908,6 +5908,12 @@ function simpan() {
   btnSimpan.innerText =
     "⏳ Menyimpan...";
 
+  // Pastikan indikator proses simpan terlihat minimal
+  // sekitar 1,2 detik agar pengguna mendapat feedback visual.
+  // Penulisan data ke server tetap berjalan normal.
+  const waktuMulaiSimpan = Date.now();
+  const durasiMinimumSimpan = 1200;
+
 
   // =====================================================
   // CALLBACK
@@ -5920,40 +5926,50 @@ function simpan() {
   window[namaCallback] =
     function(hasil) {
 
-      // Hapus callback
-      delete window[namaCallback];
+      // Pastikan proses "Menyimpan..." tetap terlihat
+      // minimal sekitar 1,2 detik.
+      const waktuBerjalan = Date.now() - waktuMulaiSimpan;
+      const sisaWaktu =
+        Math.max(0, durasiMinimumSimpan - waktuBerjalan);
+
+      setTimeout(function() {
+
+        // Hapus callback setelah hasil diproses.
+        delete window[namaCallback];
 
 
-      if (!hasil.berhasil) {
+        if (!hasil.berhasil) {
+
+          alert(
+            "❌ Gagal menyimpan:\n" +
+            hasil.pesan
+          );
+
+          btnSimpan.disabled = false;
+
+          btnSimpan.innerText =
+            "💾 SIMPAN POIN";
+
+          return;
+        }
+
+
+        // =================================================
+        // BERHASIL
+        // =================================================
 
         alert(
-          "❌ Gagal menyimpan:\n" +
-          hasil.pesan
+          "✅ Poin berhasil disimpan."
         );
 
-        btnSimpan.disabled = false;
 
-        btnSimpan.innerText =
-          "💾 SIMPAN POIN";
+        // Setelah transaksi berhasil,
+        // ambil kembali data siswa agar
+        // poin terbaru langsung tampil.
 
-        return;
-      }
+        perbaruiDataSiswaSetelahSimpan();
 
-
-      // =================================================
-      // BERHASIL
-      // =================================================
-
-      alert(
-        "✅ Poin berhasil disimpan."
-      );
-
-
-      // Setelah transaksi berhasil,
-      // ambil kembali data siswa agar
-      // poin terbaru langsung tampil.
-
-      perbaruiDataSiswaSetelahSimpan();
+      }, sisaWaktu);
 
     };
 
@@ -5993,16 +6009,24 @@ function simpan() {
   script.onerror =
     function() {
 
-      delete window[namaCallback];
+      const waktuBerjalan = Date.now() - waktuMulaiSimpan;
+      const sisaWaktu =
+        Math.max(0, durasiMinimumSimpan - waktuBerjalan);
 
-      alert(
-        "❌ Terjadi kesalahan saat menghubungi server."
-      );
+      setTimeout(function() {
 
-      btnSimpan.disabled = false;
+        delete window[namaCallback];
 
-      btnSimpan.innerText =
-        "💾 SIMPAN POIN";
+        alert(
+          "❌ Terjadi kesalahan saat menghubungi server."
+        );
+
+        btnSimpan.disabled = false;
+
+        btnSimpan.innerText =
+          "💾 SIMPAN POIN";
+
+      }, sisaWaktu);
 
     };
 
