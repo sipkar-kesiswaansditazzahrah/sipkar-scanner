@@ -3128,8 +3128,15 @@ body{
               <button class="v71-btn v71-btn-light" type="button" onclick="tutupAbsensiManualV71()">Tutup</button>
             </div>
             <div id="v71ManualStatus" class="v71-status" style="margin-top:10px">Memuat peserta...</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">
+              <button class="v71-btn v71-btn-light" type="button" onclick="pilihSemuaPesertaManualV71(true)">☑ Pilih Semua</button>
+              <button class="v71-btn v71-btn-light" type="button" onclick="pilihSemuaPesertaManualV71(false)">Kosongkan Pilihan</button>
+            </div>
             <div id="v71ManualResults" class="v71-manual-results"></div>
             <div id="v71ManualSelected" class="v71-manual-selected" style="display:none"></div>
+            <div style="position:sticky;bottom:4px;background:#fff;padding:10px 0;z-index:2">
+              <button id="v71SimpanMassal" class="v71-btn v71-btn-primary" type="button" style="width:100%" onclick="simpanHadirMassalV71()">✓ Simpan Absensi (0 Siswa)</button>
+            </div>
           </div>
         </div>
 
@@ -7207,6 +7214,7 @@ let v71PertemuanAktif = "";
 let v71AbsensiProcessing = false;
 let v71PesertaManual = [];
 let v71SiswaManualTerpilih = null;
+let v71SiswaManualTerpilihSet = new Set();
 let v71ManualLoading = false;
 let v71AdminDataTerakhir = null;
 
@@ -7292,6 +7300,7 @@ function v71EkskulBerubah(){
   v71EkskulAktif=document.getElementById("v71EkskulSelect").value;
   v71PesertaManual=[];
   v71SiswaManualTerpilih=null;
+  v71SiswaManualTerpilihSet=new Set();
   const panel=document.getElementById("v71AbsensiManualPanel");
   if(panel)panel.style.display="none";
   const out=document.getElementById("v71ManualResults");
@@ -7321,6 +7330,7 @@ function bukaAbsensiManualV71(){
   hasil.innerHTML="";
   terpilih.style.display="none";
   v71SiswaManualTerpilih=null;
+  v71SiswaManualTerpilihSet=new Set();
   if(input) input.value="";
   if(v71PesertaManual.length){
     status.className="v71-status ok";
@@ -7362,12 +7372,28 @@ function renderPesertaManualV71(keyword){
   if(!out)return;
   const q=String(keyword||"").trim().toLowerCase();
   const rows=v71PesertaManual.filter(function(x){return !q || x.nama.toLowerCase().includes(q) || x.idSiswa.toLowerCase().includes(q);});
-  if(!rows.length){out.innerHTML='<div class="v71-status">Tidak ada peserta yang cocok dengan pencarian.</div>';return;}
-  const tampil=rows.slice(0,50);
+  if(!rows.length){out.innerHTML='<div class="v71-status">Tidak ada peserta yang cocok dengan pencarian.</div>';updateJumlahPilihanManualV71();return;}
+  const tampil=rows.slice(0,100);
   out.innerHTML=tampil.map(function(x){
-    return "<button type=\"button\" class=\"v71-manual-student\" onclick=\"pilihSiswaManualV71('"+escapeJsV71(x.idSiswa)+"')\"><strong>"+escapeHtmlV71(x.nama)+"</strong><span>ID: "+escapeHtmlV71(x.idSiswa)+"</span></button>";
+    const checked=v71SiswaManualTerpilihSet.has(x.idSiswa)?" checked":"";
+    return '<label class="v71-manual-student" style="display:flex;gap:10px;align-items:center;cursor:pointer"><input type="checkbox" '+checked+' onchange="ubahPilihanPesertaManualV71(\''+escapeJsV71(x.idSiswa)+'\',this.checked)" style="width:20px;height:20px;flex-shrink:0"><span style="flex:1"><strong>'+escapeHtmlV71(x.nama)+'</strong><span>ID: '+escapeHtmlV71(x.idSiswa)+'</span></span></label>';
   }).join("");
-  if(rows.length>50)out.innerHTML+='<div class="v71-status">Menampilkan 50 hasil pertama. Persempit pencarian jika diperlukan.</div>';
+  if(rows.length>100)out.innerHTML+='<div class="v71-status">Menampilkan 100 hasil pertama. Persempit pencarian jika diperlukan.</div>';
+  updateJumlahPilihanManualV71();
+}
+function ubahPilihanPesertaManualV71(id,checked){
+  id=String(id||"").toUpperCase();
+  if(checked)v71SiswaManualTerpilihSet.add(id);else v71SiswaManualTerpilihSet.delete(id);
+  updateJumlahPilihanManualV71();
+}
+function pilihSemuaPesertaManualV71(checked){
+  const q=String(document.getElementById("v71CariNamaSiswa")?.value||"").trim().toLowerCase();
+  v71PesertaManual.filter(function(x){return !q||x.nama.toLowerCase().includes(q)||x.idSiswa.toLowerCase().includes(q);}).forEach(function(x){if(checked)v71SiswaManualTerpilihSet.add(x.idSiswa);else v71SiswaManualTerpilihSet.delete(x.idSiswa);});
+  renderPesertaManualV71(q);
+}
+function updateJumlahPilihanManualV71(){
+  const btn=document.getElementById("v71SimpanMassal");
+  if(btn)btn.innerText="✓ Simpan Absensi ("+v71SiswaManualTerpilihSet.size+" Siswa)";
 }
 
 function filterPesertaManualV71(){
@@ -7431,6 +7457,37 @@ function simpanHadirManualV71(){
     btns.forEach(function(btn){btn.disabled=false;});
     v71AbsensiProcessing=false;
   });
+}
+
+function simpanHadirMassalV71(){
+  if(v71AbsensiProcessing)return;
+  const tanggal=ambilTanggalAbsensiV71();
+  if(!v71EkskulAktif||!v71PertemuanAktif||!tanggal){alert("Pilih ekstrakurikuler, pertemuan, dan tanggal terlebih dahulu.");return;}
+  if(!penggunaAktif||!penggunaAktif.idUser){alert("Sesi pengguna tidak ditemukan. Silakan login kembali.");return;}
+  const dipilih=v71PesertaManual.filter(function(x){return v71SiswaManualTerpilihSet.has(x.idSiswa);});
+  if(!dipilih.length){alert("Centang minimal satu siswa yang hadir.");return;}
+  if(!confirm("Simpan absensi HADIR untuk "+dipilih.length+" siswa?"))return;
+  v71AbsensiProcessing=true;
+  const btn=document.getElementById("v71SimpanMassal");if(btn){btn.disabled=true;btn.innerText="Menyimpan 0/"+dipilih.length+"...";}
+  const status=document.getElementById("v71ManualStatus");
+  let i=0,berhasil=0,gagal=0,detail=[];
+  function lanjut(){
+    if(i>=dipilih.length){
+      v71AbsensiProcessing=false;if(btn){btn.disabled=false;updateJumlahPilihanManualV71();}
+      status.className=berhasil?"v71-status ok":"v71-status err";
+      status.innerText="Selesai: "+berhasil+" berhasil, "+gagal+" gagal/telah tercatat sebelumnya."+(detail.length?" Detail: "+detail.slice(0,5).join("; "):"");
+      document.getElementById("v71AbsensiStatus").className=berhasil?"v71-status ok":"v71-status err";
+      document.getElementById("v71AbsensiStatus").innerText="Absensi massal selesai: "+berhasil+" siswa berhasil disimpan.";
+      if(berhasil){dipilih.forEach(function(x){v71SiswaManualTerpilihSet.delete(x.idSiswa);});renderPesertaManualV71(document.getElementById("v71CariNamaSiswa")?.value||"");}
+      return;
+    }
+    const siswa=dipilih[i++];if(btn)btn.innerText="Menyimpan "+i+"/"+dipilih.length+"...";
+    v71Jsonp("simpanAbsensiEkskul",{idSiswa:siswa.idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,tanggal: tanggal,idUser:penggunaAktif.idUser},function(data){
+      if(data&&data.berhasil){berhasil++;}else{gagal++;detail.push(siswa.nama+": "+((data&&data.pesan)||"gagal"));}
+      lanjut();
+    },function(err){gagal++;detail.push(siswa.nama+": "+err.message);lanjut();});
+  }
+  lanjut();
 }
 
 function tutupAbsensiManualV71(){
