@@ -4206,7 +4206,8 @@ function tampilkanRankingRekapKelas(daftar) {
       rank === 2 ? "ranking-row-second" :
       rank === 3 ? "ranking-row-third" : "";
 
-    const status = normalisasiStatusRanking(item.status);
+    // Status rekap kelas selalu dihitung dari Poin Saat Ini.
+    // Tidak menggunakan item.status agar tidak tercampur dengan tindak lanjut pelanggaran.
 
     html += `
       <tr class="${rowClass}">
@@ -4224,8 +4225,8 @@ function tampilkanRankingRekapKelas(daftar) {
         <td>${formatAngka(item.negatif)}</td>
         <td class="ranking-poin">${formatAngka(item.poinSaatIni)}</td>
         <td>
-          <span class="ranking-status ${status.className}">
-            ${escapeHtml(status.label)}
+          <span class="ranking-status ${normalisasiStatusRanking(item.poinSaatIni).className}">
+            ${escapeHtml(normalisasiStatusRanking(item.poinSaatIni).label)}
           </span>
         </td>
       </tr>
@@ -4244,36 +4245,30 @@ function tampilkanRankingRekapKelas(daftar) {
   container.innerHTML = html;
 }
 
-function normalisasiStatusRanking(status) {
-  const nilai = String(status || "").trim().toLowerCase();
+function normalisasiStatusRanking(poinSaatIni) {
+  const poin = Number(poinSaatIni);
 
-  if (nilai.includes("tindak") || nilai.includes("lanjut")) {
-    return {
-      label: "Perlu Tindak Lanjut",
-      className: "ranking-status-tindak"
-    };
+  if (!Number.isFinite(poin)) {
+    return { label: "Belum Ada Data", className: "ranking-status-cukup" };
   }
 
-  if (nilai.includes("bina") || nilai.includes("pembinaan")) {
-    return {
-      label: "Perlu Pembinaan",
-      className: "ranking-status-pembinaan"
-    };
+  if (poin < 50) {
+    return { label: "Perlu Pembinaan", className: "ranking-status-pembinaan" };
   }
-
-  if (!nilai || nilai === "-" || nilai === "baik") {
-    return {
-      label: "Baik",
-      className: "ranking-status-baik"
-    };
+  if (poin <= 100) {
+    return { label: "Perlu Perhatian", className: "ranking-status-perhatian" };
   }
-
-  return {
-    label: status,
-    className: "ranking-status-baik"
-  };
+  if (poin <= 150) {
+    return { label: "Cukup", className: "ranking-status-cukup" };
+  }
+  if (poin <= 200) {
+    return { label: "Baik", className: "ranking-status-baik" };
+  }
+  if (poin <= 500) {
+    return { label: "Sangat Baik", className: "ranking-status-sangat" };
+  }
+  return { label: "Berprestasi", className: "ranking-status-berprestasi" };
 }
-
 
 // V5.4.4 — Wali Kelas aktif dari sheet KELAS
 let waliKelasAktif = "";
@@ -5133,6 +5128,26 @@ th{background:#fff2d6;font-weight:800;color:#222}th,td{border:1px solid #d8c8a7;
 .ranking-status-tindak {
   background: #fde9eb;
   color: #b51218;
+}
+
+.ranking-status-perhatian {
+  background: #fff0e5;
+  color: #a84b00;
+}
+
+.ranking-status-cukup {
+  background: #edf2ff;
+  color: #3157a4;
+}
+
+.ranking-status-sangat {
+  background: #e8f5ff;
+  color: #075985;
+}
+
+.ranking-status-berprestasi {
+  background: #f3e8ff;
+  color: #7e22ce;
 }
 
 .ranking-row-first td {
