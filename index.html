@@ -3092,7 +3092,7 @@ body{
     <div id="absensiEkskulGuruV71" class="v71-page">
       <div class="v71-panel">
         <h2>🏃 Absensi Ekstrakurikuler</h2>
-        <p>Scan QR siswa. Setiap scan yang valid otomatis tercatat sebagai <b>HADIR</b>.</p>
+        <p>Scan QR siswa atau centang nama peserta. Gabungkan kedua cara, lalu simpan seluruh kehadiran sekaligus.</p>
         <div class="v71-row">
           <div class="v71-field">
             <label for="v71EkskulSelect">Jenis Ekstrakurikuler</label>
@@ -3120,7 +3120,7 @@ body{
 
         <div class="v71-manual-box">
           <div class="v71-manual-title">🔎 Tidak membawa QR Code?</div>
-          <div class="v71-manual-help">Cari nama peserta yang terdaftar pada ekstrakurikuler ini, pilih siswa, lalu tekan <b>HADIR</b>.</div>
+          <div class="v71-manual-help">Peserta hasil scan otomatis dicentang. Cari dan centang peserta lain yang hadir, lalu simpan semua pilihan sekaligus.</div>
           <button class="v71-btn v71-btn-light" type="button" onclick="bukaAbsensiManualV71()">🔎 Cari Nama Siswa</button>
           <div id="v71AbsensiManualPanel" style="display:none;margin-top:12px">
             <div class="v71-manual-search-row">
@@ -3141,7 +3141,7 @@ body{
         </div>
 
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-          <button class="v71-btn v71-btn-primary" onclick="mulaiAbsensiEkskulV71()">📷 Mulai Scan</button>
+          <button class="v71-btn v71-btn-primary" onclick="mulaiAbsensiEkskulV71()">📷 Mulai / Lanjut Scan</button>
           <button class="v71-btn v71-btn-light" onclick="kembaliKeMenuGuruV71()">← Kembali</button>
         </div>
       </div>
@@ -7330,7 +7330,6 @@ function bukaAbsensiManualV71(){
   hasil.innerHTML="";
   terpilih.style.display="none";
   v71SiswaManualTerpilih=null;
-  v71SiswaManualTerpilihSet=new Set();
   if(input) input.value="";
   if(v71PesertaManual.length){
     status.className="v71-status ok";
@@ -7524,23 +7523,47 @@ async function qrBerhasilV71Absensi(qrText){
   if(!idSiswa){v71AbsensiProcessing=false;return;}
   try{await hentikanScannerQR();}catch(e){}
   const status=document.getElementById("v71AbsensiStatus");
-  status.className="v71-status"; status.innerText="Memeriksa peserta...";
-  v71Jsonp("simpanAbsensiEkskul",{idSiswa:idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,tanggal:ambilTanggalAbsensiV71(),idUser:(penggunaAktif&&penggunaAktif.idUser)||""},function(data){
-    const hasil=document.getElementById("v71AbsensiHasil"); hasil.style.display="block";
-    if(data && data.berhasil){
-      hasil.innerHTML='<strong>'+escapeHtmlV71(data.namaSiswa||idSiswa)+'</strong><div class="v71-hadir">✓ HADIR</div><div>'+escapeHtmlV71(data.waktuScan||"")+'</div>';
-      status.className="v71-status ok"; status.innerText="✓ Absensi berhasil disimpan. Siap scan siswa berikutnya.";
-    }else{
-      const pesanErr=(data&&data.pesan)||"Absensi tidak dapat disimpan.";
-      hasil.innerHTML='<strong>'+escapeHtmlV71(idSiswa)+'</strong><div>'+escapeHtmlV71(pesanErr)+'</div>';
-      status.className="v71-status err"; status.innerText="❌ "+pesanErr;
-    }
+  status.className="v71-status";
+  status.innerText="Memeriksa peserta hasil scan...";
+
+  function selesaiScan(pesan,ok){
+    status.className=ok?"v71-status ok":"v71-status err";
+    status.innerText=pesan;
     v71AbsensiProcessing=false;
-    setTimeout(function(){ if(v71ModeGuru==="absensi" && document.getElementById("absensiEkskulGuruV71").classList.contains("active")){ mulaiScannerAbsensiV71(); } },350);
-  },function(err){
-    status.className="v71-status err"; status.innerText="❌ "+err.message; v71AbsensiProcessing=false;
-    setTimeout(function(){if(v71ModeGuru==="absensi")mulaiScannerAbsensiV71();},350);
-  });
+    setTimeout(function(){
+      if(v71ModeGuru==="absensi" && document.getElementById("absensiEkskulGuruV71").classList.contains("active")) mulaiScannerAbsensiV71();
+    },350);
+  }
+
+  function tandaiPeserta(){
+    const siswa=v71PesertaManual.find(function(x){return x.idSiswa===idSiswa;});
+    const hasil=document.getElementById("v71AbsensiHasil");
+    if(!siswa){
+      if(hasil){hasil.style.display="block";hasil.innerHTML='<strong>'+escapeHtmlV71(idSiswa)+'</strong><div>❌ Siswa tidak terdaftar pada ekstrakurikuler yang dipilih.</div>';}
+      selesaiScan("❌ Siswa tidak terdaftar pada ekskul ini.",false);
+      return;
+    }
+    const sudahDipilih=v71SiswaManualTerpilihSet.has(idSiswa);
+    v71SiswaManualTerpilihSet.add(idSiswa);
+    const panel=document.getElementById("v71AbsensiManualPanel");
+    if(panel)panel.style.display="block";
+    const input=document.getElementById("v71CariNamaSiswa");
+    if(input)input.value="";
+    renderPesertaManualV71("");
+    if(hasil){hasil.style.display="block";hasil.innerHTML='<strong>'+escapeHtmlV71(siswa.nama)+'</strong><div class="v71-hadir">✓ TERPILIH HADIR</div><div>'+ (sudahDipilih?'Siswa ini sudah masuk daftar pilihan.':'Ditambahkan ke daftar hadir. Tekan Simpan Absensi untuk menyimpan semua pilihan.') +'</div>';}
+    selesaiScan((sudahDipilih?'ℹ️ ':'✓ ')+siswa.nama+(sudahDipilih?' sudah dipilih sebelumnya.':' ditambahkan ke daftar hadir. Lanjut scan atau centang nama lain, lalu simpan.'),true);
+  }
+
+  if(v71PesertaManual.length){tandaiPeserta();return;}
+  v71Jsonp("pesertaEkskul",{idEkskul:v71EkskulAktif},function(data){
+    if(!data||data.berhasil===false){selesaiScan("❌ Daftar peserta gagal dimuat.",false);return;}
+    const rows=Array.isArray(data.data)?data.data:[];
+    v71PesertaManual=rows.map(function(row){
+      if(Array.isArray(row))return {idSiswa:String(row[0]||"").trim().toUpperCase(),nama:String(row[1]||"").trim(),idEkskul:String(row[2]||v71EkskulAktif).trim(),tahun:String(row[3]||"").trim(),status:String(row[4]||"").trim()};
+      return {idSiswa:String(row.idSiswa||row.ID_Siswa||"").trim().toUpperCase(),nama:String(row.namaSiswa||row.nama||row.Nama_Siswa||"").trim(),idEkskul:String(row.idEkskul||row.ID_Ekskul||v71EkskulAktif).trim(),tahun:String(row.tahunPelajaran||row.tahun||row.Tahun_Pelajaran||"").trim(),status:String(row.status||row.Status||"").trim()};
+    }).filter(function(x){return x.idSiswa&&x.nama&&String(x.status||"AKTIF").toUpperCase()==="AKTIF";});
+    tandaiPeserta();
+  },function(err){selesaiScan("❌ "+err.message,false);});
 }
 
 // Override the existing QR success path only while the Guru is in attendance mode.
