@@ -2306,6 +2306,7 @@ body{
         <button id="navDashboard" class="active" onclick="bukaHalamanAdmin('dashboard')">📊 Dashboard</button>
         <button id="navRekapSiswa" onclick="bukaHalamanAdmin('rekapSiswa')">👤 Rekap Siswa</button>
         <button id="navRekapKelas" onclick="bukaHalamanAdmin('rekapKelas')">🏫 Rekap Per Kelas</button>
+        <button id="navRankingPeserta" onclick="bukaHalamanAdmin('rankingPeserta')">🏆 Ranking Peserta Didik</button>
         <button id="navSuratPemanggilan" onclick="bukaHalamanAdmin('suratPemanggilan')">📄 Surat Pemanggilan</button>
         <button id="navSuratPeringatan" onclick="bukaHalamanAdmin('suratPeringatan')">⚠️ Surat Peringatan</button>
         <button id="navTindakLanjut" onclick="bukaHalamanAdmin('tindakLanjut')">🛡️ Tindak Lanjut</button>
@@ -2595,6 +2596,23 @@ body{
       </div>
       </div>
 
+
+      <!-- HALAMAN RANKING PESERTA DIDIK -->
+      <div id="adminRankingPesertaPage" class="admin-page">
+        <div class="rekap-back"><button onclick="bukaHalamanAdmin('dashboard')">← Kembali ke Dashboard</button></div>
+        <div class="card" style="padding:18px">
+          <div class="dashboard-section-title"><div><h3>🏆 Ranking Peserta Didik</h3><span>Ranking poin negatif dan poin saat ini ditampilkan terpisah</span></div><button onclick="muatRankingPesertaDidik()">↻ Muat Ulang</button></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:14px 0">
+            <div><label for="rankingFilterKelas">Filter Kelas</label><select id="rankingFilterKelas" onchange="renderRankingPesertaDidik()" style="width:100%;padding:10px;border:1px solid #d7dde5;border-radius:9px"><option value="">Semua Kelas</option></select></div>
+            <div><label for="rankingCariNama">Cari Nama / ID</label><input id="rankingCariNama" oninput="renderRankingPesertaDidik()" placeholder="Ketik nama atau ID siswa" style="width:100%;padding:10px;border:1px solid #d7dde5;border-radius:9px"></div>
+          </div>
+          <div id="rankingPesertaStatus" class="dashboard-loading">Memuat ranking...</div>
+          <div class="dashboard-section-title" style="margin-top:20px"><h3>⚠️ Ranking Poin Negatif</h3><span id="rankingNegatifJumlah"></span></div>
+          <div id="rankingNegatifTabel" class="rekap-table-wrap"></div>
+          <div class="dashboard-section-title" style="margin-top:24px"><h3>💎 Ranking Poin Saat Ini</h3><span id="rankingSaatIniJumlah"></span></div>
+          <div id="rankingSaatIniTabel" class="rekap-table-wrap"></div>
+        </div>
+      </div>
 
       <!-- HALAMAN REKAP ABSENSI EKSKUL ADMIN V7.1 -->
       <div id="adminAbsensiEkskulPage" class="admin-page">
@@ -3092,7 +3110,7 @@ body{
     <div id="absensiEkskulGuruV71" class="v71-page">
       <div class="v71-panel">
         <h2>🏃 Absensi Ekstrakurikuler</h2>
-        <p>Scan QR siswa atau centang nama peserta. Gabungkan kedua cara, lalu simpan seluruh kehadiran sekaligus.</p>
+        <p>Scan QR siswa. Setiap scan yang valid otomatis tercatat sebagai <b>HADIR</b>.</p>
         <div class="v71-row">
           <div class="v71-field">
             <label for="v71EkskulSelect">Jenis Ekstrakurikuler</label>
@@ -3120,7 +3138,7 @@ body{
 
         <div class="v71-manual-box">
           <div class="v71-manual-title">🔎 Tidak membawa QR Code?</div>
-          <div class="v71-manual-help">Peserta hasil scan otomatis dicentang. Cari dan centang peserta lain yang hadir, lalu simpan semua pilihan sekaligus.</div>
+          <div class="v71-manual-help">Cari nama peserta yang terdaftar pada ekstrakurikuler ini, pilih siswa, lalu tekan <b>HADIR</b>.</div>
           <button class="v71-btn v71-btn-light" type="button" onclick="bukaAbsensiManualV71()">🔎 Cari Nama Siswa</button>
           <div id="v71AbsensiManualPanel" style="display:none;margin-top:12px">
             <div class="v71-manual-search-row">
@@ -3141,7 +3159,7 @@ body{
         </div>
 
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-          <button class="v71-btn v71-btn-primary" onclick="mulaiAbsensiEkskulV71()">📷 Mulai / Lanjut Scan</button>
+          <button class="v71-btn v71-btn-primary" onclick="mulaiAbsensiEkskulV71()">📷 Mulai Scan</button>
           <button class="v71-btn v71-btn-light" onclick="kembaliKeMenuGuruV71()">← Kembali</button>
         </div>
       </div>
@@ -4552,6 +4570,22 @@ SDIT AZZAHRAH
 }
 
 
+let dataRankingPesertaDidik = null;
+function muatRankingPesertaDidik() {
+  if (!penggunaAktif || String(penggunaAktif.role||"").trim().toLowerCase() !== "admin") return;
+  const status=document.getElementById("rankingPesertaStatus"); if(status) status.textContent="Mengambil data ranking dari Google Sheets...";
+  const cb="callbackRankingPeserta_"+Date.now();
+  window[cb]=function(data){ delete window[cb]; if(!data||data.berhasil===false){status.textContent="Gagal memuat ranking: "+(data&&data.pesan||"server tidak merespons");return;} dataRankingPesertaDidik=data; const sel=document.getElementById("rankingFilterKelas"); const old=sel.value; const kelas=[...new Set((data.rankingSaatIni||[]).map(x=>x.kelas).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"id",{numeric:true})); sel.innerHTML='<option value="">Semua Kelas</option>'+kelas.map(k=>'<option value="'+escapeHtmlRanking(k)+'">'+escapeHtmlRanking(k)+'</option>').join(''); if(kelas.includes(old))sel.value=old; status.textContent="Data berhasil dimuat: "+data.total+" peserta didik aktif."; renderRankingPesertaDidik(); };
+  const s=document.createElement("script"); s.src=APPS_SCRIPT_URL+"?action=rankingPesertaDidik&callback="+cb; s.onerror=function(){delete window[cb];if(status)status.textContent="Tidak dapat menghubungi server SIPKAR.";}; document.body.appendChild(s);
+}
+function escapeHtmlRanking(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function renderRankingPesertaDidik(){
+ const d=dataRankingPesertaDidik;if(!d)return; const kelas=(document.getElementById("rankingFilterKelas")||{}).value||""; const q=((document.getElementById("rankingCariNama")||{}).value||"").trim().toLowerCase();
+ const filter=a=>a.filter(x=>(!kelas||x.kelas===kelas)&&(!q||x.nama.toLowerCase().includes(q)||x.idSiswa.toLowerCase().includes(q)));
+ const tabel=(arr,field)=>{if(!arr.length)return '<div class="dashboard-empty">Tidak ada peserta didik yang cocok.</div>';return '<table class="rekap-table"><thead><tr><th>Peringkat</th><th>ID Siswa</th><th>Nama Peserta Didik</th><th>Kelas</th><th>'+ (field==='poinNegatif'?'Total Poin Negatif':'Poin Saat Ini') +'</th></tr></thead><tbody>'+arr.map((x,i)=>'<tr><td><b>'+ (i+1) +'</b></td><td>'+escapeHtmlRanking(x.idSiswa)+'</td><td>'+escapeHtmlRanking(x.nama)+'</td><td>'+escapeHtmlRanking(x.kelas||'-')+'</td><td><b>'+Number(x[field]||0).toLocaleString('id-ID')+'</b></td></tr>').join('')+'</tbody></table>';};
+ const n=filter(d.rankingNegatif||[]),s=filter(d.rankingSaatIni||[]);document.getElementById("rankingNegatifJumlah").textContent=n.length+" siswa";document.getElementById("rankingSaatIniJumlah").textContent=s.length+" siswa";document.getElementById("rankingNegatifTabel").innerHTML=tabel(n,"poinNegatif");document.getElementById("rankingSaatIniTabel").innerHTML=tabel(s,"poinSaatIni");
+}
+
 function bukaHalamanAdmin(halaman) {
 
   if (
@@ -4591,8 +4625,10 @@ function bukaHalamanAdmin(halaman) {
     document.getElementById("navAbsensiEkskul");
 
   const absensiEkskulPage = document.getElementById("adminAbsensiEkskulPage");
+  const rankingPesertaPage = document.getElementById("adminRankingPesertaPage");
+  const navRankingPeserta = document.getElementById("navRankingPeserta");
 
-  if (!dashboardPage || !rekapPage || !rekapKelasPage || !tindakPage || !suratPage || !suratPeringatanPage || !absensiEkskulPage) {
+  if (!dashboardPage || !rekapPage || !rekapKelasPage || !tindakPage || !suratPage || !suratPeringatanPage || !absensiEkskulPage || !rankingPesertaPage) {
     return;
   }
 
@@ -4603,6 +4639,8 @@ function bukaHalamanAdmin(halaman) {
   suratPage.classList.remove("active");
   suratPeringatanPage.classList.remove("active");
   absensiEkskulPage.classList.remove("active");
+  rankingPesertaPage.classList.remove("active");
+  if (navRankingPeserta) navRankingPeserta.classList.remove("active");
   if (navDashboard) navDashboard.classList.remove("active");
   if (navRekap) navRekap.classList.remove("active");
   if (navRekapKelas) navRekapKelas.classList.remove("active");
@@ -4610,6 +4648,13 @@ function bukaHalamanAdmin(halaman) {
   if (navSurat) navSurat.classList.remove("active");
   if (navSuratPeringatan) navSuratPeringatan.classList.remove("active");
   if (navAbsensiEkskul) navAbsensiEkskul.classList.remove("active");
+
+  if (halaman === "rankingPeserta") {
+    rankingPesertaPage.classList.add("active");
+    if (navRankingPeserta) navRankingPeserta.classList.add("active");
+    muatRankingPesertaDidik();
+    return;
+  }
 
   if (halaman === "absensiEkskul") {
     absensiEkskulPage.classList.add("active");
@@ -7330,6 +7375,7 @@ function bukaAbsensiManualV71(){
   hasil.innerHTML="";
   terpilih.style.display="none";
   v71SiswaManualTerpilih=null;
+  v71SiswaManualTerpilihSet=new Set();
   if(input) input.value="";
   if(v71PesertaManual.length){
     status.className="v71-status ok";
@@ -7523,47 +7569,23 @@ async function qrBerhasilV71Absensi(qrText){
   if(!idSiswa){v71AbsensiProcessing=false;return;}
   try{await hentikanScannerQR();}catch(e){}
   const status=document.getElementById("v71AbsensiStatus");
-  status.className="v71-status";
-  status.innerText="Memeriksa peserta hasil scan...";
-
-  function selesaiScan(pesan,ok){
-    status.className=ok?"v71-status ok":"v71-status err";
-    status.innerText=pesan;
-    v71AbsensiProcessing=false;
-    setTimeout(function(){
-      if(v71ModeGuru==="absensi" && document.getElementById("absensiEkskulGuruV71").classList.contains("active")) mulaiScannerAbsensiV71();
-    },350);
-  }
-
-  function tandaiPeserta(){
-    const siswa=v71PesertaManual.find(function(x){return x.idSiswa===idSiswa;});
-    const hasil=document.getElementById("v71AbsensiHasil");
-    if(!siswa){
-      if(hasil){hasil.style.display="block";hasil.innerHTML='<strong>'+escapeHtmlV71(idSiswa)+'</strong><div>❌ Siswa tidak terdaftar pada ekstrakurikuler yang dipilih.</div>';}
-      selesaiScan("❌ Siswa tidak terdaftar pada ekskul ini.",false);
-      return;
+  status.className="v71-status"; status.innerText="Memeriksa peserta...";
+  v71Jsonp("simpanAbsensiEkskul",{idSiswa:idSiswa,idEkskul:v71EkskulAktif,pertemuan:v71PertemuanAktif,tanggal:ambilTanggalAbsensiV71(),idUser:(penggunaAktif&&penggunaAktif.idUser)||""},function(data){
+    const hasil=document.getElementById("v71AbsensiHasil"); hasil.style.display="block";
+    if(data && data.berhasil){
+      hasil.innerHTML='<strong>'+escapeHtmlV71(data.namaSiswa||idSiswa)+'</strong><div class="v71-hadir">✓ HADIR</div><div>'+escapeHtmlV71(data.waktuScan||"")+'</div>';
+      status.className="v71-status ok"; status.innerText="✓ Absensi berhasil disimpan. Siap scan siswa berikutnya.";
+    }else{
+      const pesanErr=(data&&data.pesan)||"Absensi tidak dapat disimpan.";
+      hasil.innerHTML='<strong>'+escapeHtmlV71(idSiswa)+'</strong><div>'+escapeHtmlV71(pesanErr)+'</div>';
+      status.className="v71-status err"; status.innerText="❌ "+pesanErr;
     }
-    const sudahDipilih=v71SiswaManualTerpilihSet.has(idSiswa);
-    v71SiswaManualTerpilihSet.add(idSiswa);
-    const panel=document.getElementById("v71AbsensiManualPanel");
-    if(panel)panel.style.display="block";
-    const input=document.getElementById("v71CariNamaSiswa");
-    if(input)input.value="";
-    renderPesertaManualV71("");
-    if(hasil){hasil.style.display="block";hasil.innerHTML='<strong>'+escapeHtmlV71(siswa.nama)+'</strong><div class="v71-hadir">✓ TERPILIH HADIR</div><div>'+ (sudahDipilih?'Siswa ini sudah masuk daftar pilihan.':'Ditambahkan ke daftar hadir. Tekan Simpan Absensi untuk menyimpan semua pilihan.') +'</div>';}
-    selesaiScan((sudahDipilih?'ℹ️ ':'✓ ')+siswa.nama+(sudahDipilih?' sudah dipilih sebelumnya.':' ditambahkan ke daftar hadir. Lanjut scan atau centang nama lain, lalu simpan.'),true);
-  }
-
-  if(v71PesertaManual.length){tandaiPeserta();return;}
-  v71Jsonp("pesertaEkskul",{idEkskul:v71EkskulAktif},function(data){
-    if(!data||data.berhasil===false){selesaiScan("❌ Daftar peserta gagal dimuat.",false);return;}
-    const rows=Array.isArray(data.data)?data.data:[];
-    v71PesertaManual=rows.map(function(row){
-      if(Array.isArray(row))return {idSiswa:String(row[0]||"").trim().toUpperCase(),nama:String(row[1]||"").trim(),idEkskul:String(row[2]||v71EkskulAktif).trim(),tahun:String(row[3]||"").trim(),status:String(row[4]||"").trim()};
-      return {idSiswa:String(row.idSiswa||row.ID_Siswa||"").trim().toUpperCase(),nama:String(row.namaSiswa||row.nama||row.Nama_Siswa||"").trim(),idEkskul:String(row.idEkskul||row.ID_Ekskul||v71EkskulAktif).trim(),tahun:String(row.tahunPelajaran||row.tahun||row.Tahun_Pelajaran||"").trim(),status:String(row.status||row.Status||"").trim()};
-    }).filter(function(x){return x.idSiswa&&x.nama&&String(x.status||"AKTIF").toUpperCase()==="AKTIF";});
-    tandaiPeserta();
-  },function(err){selesaiScan("❌ "+err.message,false);});
+    v71AbsensiProcessing=false;
+    setTimeout(function(){ if(v71ModeGuru==="absensi" && document.getElementById("absensiEkskulGuruV71").classList.contains("active")){ mulaiScannerAbsensiV71(); } },350);
+  },function(err){
+    status.className="v71-status err"; status.innerText="❌ "+err.message; v71AbsensiProcessing=false;
+    setTimeout(function(){if(v71ModeGuru==="absensi")mulaiScannerAbsensiV71();},350);
+  });
 }
 
 // Override the existing QR success path only while the Guru is in attendance mode.
